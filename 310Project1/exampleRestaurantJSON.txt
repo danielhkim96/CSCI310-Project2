@@ -1,9 +1,0 @@
-"address":"3500 S Figueroa Blvd, Los Angeles, CA 90089",
-      "phone":"(213) 743-2077",
-      "price":"$",
-      "name":"Rosso Oro\u2019s Pizzeria",
-      "rating":2.5,
-      "id":"5j3i_3X9qF0o6VU2uCdQtA",
-      "type":"restaurant",
-      "url":"empty"
-      "directionsURL":"https://www.google.com/maps/dir/?api=1&origin=Tommy+Trojan+Los+Angeles+CA&destination=3584%20S%20Figueroa%20St%2C+Los+Angeles%2C+CA+90007&travelmode=driving"
