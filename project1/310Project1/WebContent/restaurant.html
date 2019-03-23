@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- from bootstrap template -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <!-- from alex -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/css/mdb.min.css">
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
+
+
+    <link href="styles.css" rel="stylesheet"/>
+
+    <meta http-equiv='Pragma' content='no-cache'>
+    <meta http-equiv='Expires' content='-1'>
+
+    <title>
+        Food Data
+            </title>
+
+    <!-- from bootstrap -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+<body role="document" onLoad="getRestaurantInformation()">
+
+<div id="middle1">
+    <div class="container">
+
+
+<div class="row">
+    <div class="col-sm-9">
+        <a href="javascript:history.back()">&lt;&lt;  Back</a>
+        <h2 id="name"></h2>
+
+        <table class="table">
+            <tr>
+                <td><b>Address</b></td>
+                <td id="address">
+                    3200 Jefferson Blvd<br>
+                    Los Angeles, CA 90007
+                </td>
+            </tr>
+            <tr>
+                <td><b>Phone</b></td>
+                <td>
+                    <span id="phone">213-324-2132</span>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Website</b></td>
+                <td id="website">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-sm-3">
+        <br>
+        <br>
+        <button id="printBtn" class="btn btn-success "
+            >Printable Version
+        </button><br><br>
+        <a href="results.html" class="btn btn-success" id="resultBtn">Back to Results</a>
+
+        <br>
+        <br>
+
+	<select class="form-control" id="dropdown">
+	  <option value=""></option>
+	  <option value="Favorites">Favorites</option>
+	  <option value="ToExplore">To Explore</option>
+	  <option value="DoNotShow">Do Not Show</option>
+	</select> 
+
+            <br>
+            <button id="addBtn" class="btn btn-success ">Add to List</button>
+    </div>
+</div>
+
+
+</div>
+</div>
+
+    <div id="bottom">
+        
+    </div>
+
+</body>
+<script>
+var url = window.location.search.substring(1);
+var id = url.split("=");
+id = id[1];
+console.log(id);
+function getRestaurantInformation() { 
+    
+	$.get("getRestaurantInformation?id="+id, function(d) {
+    //$.get("r?id="+id, function(d) {
+
+        var json = JSON.parse(d);
+        $("#name").text(json.name);
+        $("#phone").text(json.phone);
+        
+        var a = '<a href="' + json.directionsURL
+            + '" target="_self">'+ json.address + '</a>';
+
+        $("#address").html(a);
+
+        var go = json.url == "empty" ? "#" : json.url;
+        var url = '<a href="' + go
+            + '">'+ json.url + '</a>';
+        $("#website").html(url);
+
+    });
+}
+
+$("#addBtn").click(function(){
+    if( $("#dropdown").val() != "" ) {
+        $.post("ListManagement?listName="
+                + $("#dropdown").val() 
+                + "&id=" + id
+                + "&action=add");
+    }
+});
+
+$("#printBtn").click(function(){
+    window.open("printRestaurant.html?id="+id, '_blank');
+});
+
+
+
+</script>
+
+</html>
+
+
+
