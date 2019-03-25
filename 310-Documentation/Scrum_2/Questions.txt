@@ -1,0 +1,26 @@
+1. What have you accomplished since the last meeting?
+Samuel He: Drafted JUnit tests for add to grocery list, setting positive radius on search, and search functionality returning the correct results. Worked on feature files with Yvette.
+
+Daniel Kim: Drafted the database schema
+
+Yvette Lopez: Created feature files and drafted features to cover requirements 3, 6, and 8. Worked on JUnit tests with Sam.
+
+Xubo Zhu: Got a working copy of the I’m Hungry software to execute on my machine.
+
+2. Are there any obstacles in the way of meeting your goal?
+Samuel He: Indecision related to which project 1 base code to use, which creates difficulties in understanding how function implementations of new requirements will be.
+
+Daniel Kim: None
+
+Yvette Lopez: Getting cucumber and our current version of the I’m Hungry website working on my machine so that I can start developing the step definitions. Currently, cucumber won’t recognize my chromedriver filepath, trying to figure that out.
+
+Xubo Zhu: None
+
+3. What will you accomplish before the next meeting?
+Samuel He: Write backend functions for functions tested in already completed JUnit tests.
+
+Daniel Kim: Get started on the 8th feature - Set the radius of the restaurant search.
+
+Yvette Lopez: Get cucumber to successfully run the I’m Hungry website on my machine. Draft step definitions for all feature files.
+
+Xubo Zhu: Get started on the pagination front-end
