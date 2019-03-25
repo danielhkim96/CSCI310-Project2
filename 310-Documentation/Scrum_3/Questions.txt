@@ -1,0 +1,26 @@
+1. What have you accomplished since the last meeting?
+ Xubo Zhu: Pushed the code from my team in Project 1 to the new GitHub repo for this new project and share it with everyone.
+
+Samuel He: Drafted backend functions for set distance radius for restaurant search and add to grocery list.
+
+Daniel Kim: Read through the Google Distances Matrix API and the Google Places API
+
+Yvette Lopez: Got cucumber working on my machine, drafted the step definitions for the features.
+
+2. Are there any obstacles in the way of meeting your goal?
+ Xubo Zhu: Since I am in China and meeting with the team using Skype calls, the connection is sometimes low and we need to reconnect one or two times during the meeting. 
+
+Samuel He: Matching the backend implementation to an already existing code base.
+
+Daniel Kim: Reading through and understanding someone else’s code for the restaurant location
+
+Yvette Lopez: I still need to figure out how maven works in order to get a working copy of the I’m Hungry website on my machine
+
+3. What will you accomplish before the next meeting?
+Xubo Zhu: Make progress in the Pagination of Results functionality. 
+
+Samuel He: Finish backend functions for add to grocery list and setting radius for restaurant search.
+
+Daniel Kim: Have some code/pseudocode on the restaurant radius feature
+
+Yvette Lopez: Get the website working on my machine - have the cucumber tests run on the website
