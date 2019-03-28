@@ -45,6 +45,7 @@ public class IHSearch extends HttpServlet {
 		setAccessControlHeaders(response);
 		String keyword = request.getParameter("search_query");
 		String number = request.getParameter("num_results");
+		String radius = request.getParameter("radius");
 		// No session required for Search
 		
 		ArrayList<String> images = doImageSearch(keyword);

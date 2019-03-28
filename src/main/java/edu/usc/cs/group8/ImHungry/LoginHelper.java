@@ -16,9 +16,10 @@ public class LoginHelper {
 
     public void connect() {
     try {
+    	//TODO: ADD USERNAME AND PASSWORD
         conn =
            DriverManager.getConnection("jdbc:mysql://localhost/test?" +
-                                       "user=minty&password=greatsqldb");
+                                       "user=&password=");
 
         // Do something with the Connection
 
