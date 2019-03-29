@@ -1,0 +1,26 @@
+1. What have you accomplished since the last meeting?
+Samuel He: Finished JUnit tests for grocery list and radius search. Finished backend for grocery list.
+
+Daniel Kim: Worked on and completed the frontend for the restaurant radius search with Hiro.
+
+Yvette Lopez: Tailored all of the black box tests to the current front-end. 
+
+Xubo Zhu: Finished the restaurant radius search on the frontend with Daniel. Made some progress on the pagination. 
+
+2. Are there any obstacles in the way of meeting your goal?
+Samuel He: None
+
+Daniel Kim: None
+
+Yvette Lopez: Having difficulties with getting the new website to run on my computer - some pages work, while others don’t. I think it’s a problem on my end.
+
+Xubo Zhu: Having some difficulties on implementing the pagination functionality. 
+
+3. What will you accomplish before the next meeting?
+Samuel He: Start integrating MySQL with backend. 
+
+Daniel Kim: Get working code for user login functionality
+
+Yvette Lopez: Get the website working again on my computer - do comprehensive testing on radius search.
+
+Xubo Zhu: Finish the pagination feature, and test the radius search feature. Work with Daniel on the login functionality. 
