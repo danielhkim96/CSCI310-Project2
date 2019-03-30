@@ -8,17 +8,18 @@ import org.junit.Test;
 
 public class RecipeTest {
 	
-	public static Recipe recipe = new Recipe("Food", "20", "10", "food.jpg", new ArrayList<String>(10), new ArrayList<String>(5));
+	public static Recipe recipe = new Recipe("Food", "20", "10", "food.jpg", new ArrayList<String>(10), new ArrayList<String>(5), new ArrayList<String>(5));
 	
 	@Test
 	public void testConstructor() {
-		Recipe myRecipe = new Recipe("Food", "20", "10", "food.jpg", new ArrayList<String>(10), new ArrayList<String>(5));
+		Recipe myRecipe = new Recipe("Food", "20", "10", "food.jpg", new ArrayList<String>(10), new ArrayList<String>(5), new ArrayList<String>(5));
 		assertEquals(myRecipe.getName(),"Food");
 		assertEquals(myRecipe.getPrepTime(),20);
 		assertEquals(myRecipe.getCookTime(),10);
 		assertEquals(myRecipe.getImgURL(),"food.jpg");
 		assertEquals(myRecipe.getIngredients().size(),0);
 		assertEquals(myRecipe.getInstructions().size(),0);
+		assertEquals(myRecipe.getGroceryList().size(),0);
 	}
 	
 	@Test
@@ -63,6 +64,16 @@ public class RecipeTest {
 		assertEquals(recipe.getInstructions().size(),2);
 		assertEquals(recipe.getInstructions().get(0),"Mix thoroughly.");
 		assertEquals(recipe.getInstructions().get(1),"Serve warm.");
+	}
+	
+	@Test
+	public void testGroceryList() {
+		recipe.setInstructions(new ArrayList<String>());
+		recipe.getInstructions().add("salt");
+		recipe.getInstructions().add("pepper");
+		assertEquals(recipe.getInstructions().size(),2);
+		assertEquals(recipe.getInstructions().get(0),"salt");
+		assertEquals(recipe.getInstructions().get(1),"pepper");
 	}
 	
 	@Test
