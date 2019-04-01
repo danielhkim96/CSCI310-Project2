@@ -12,6 +12,12 @@
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <link rel="stylesheet" type="text/css" href="results_page.css" />
+	    
+	    <!-- New for Pagination -->
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://www.solodev.com/assets/pagination/jquery.twbsPagination.js"></script>
+		<script src="paging.js"></script>
 	
 	    <!-- Bootstrap CSS -->
 	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -24,6 +30,9 @@
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/ssbootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="js/jquery-1.11.3.min.js"></script>
+	
+		
 		<div class = "div_for_entire_content">
 		
 			<!-- The following div will display the collage with random rotation angle -->
@@ -110,26 +119,40 @@
 						<div class="restaurant_results">
 							<h2>Restaurant Results</h2>
 							<table id="restaurant_results_table">
-								<%
-								//Getting restaurant results array list from session
-								if (session.getAttribute("restaurants") == null){
-									return;
-								}
-								ArrayList<Restaurant> list_of_restaurant_results = (ArrayList<Restaurant>)(session.getAttribute("restaurants"));
-								for (int i = 0; i < list_of_restaurant_results.size(); i++){
-									
-									//The following will get the detailed restaurant information needed to be displayed
-									Restaurant restaurant = list_of_restaurant_results.get(i);
-									String restaurant_name = restaurant.getName();
-									int driveTime = restaurant.getDriveTime();
-									String address = restaurant.getAddress();
-									%> <tr><th><a href="restaurant_page.jsp?restaurant_id=<%= i%>"><%=restaurant_name%></a> </th> <th>Drive Time: <%=driveTime%> min </th> <th><%=address %> </th> <th><%
-											for (int j = 0; j < restaurant.getPriceRange(); j++ ){%>
-												$
-											<% } %></th></tr> <%
-								}
-								%>
+							 <!--  class="footable" data-page-size="10" -->
+							 
+							 	<div class="jumbotron page" id="page1">
+									<%
+									//Getting restaurant results array list from session
+									if (session.getAttribute("restaurants") == null){
+										return;
+									}
+									ArrayList<Restaurant> list_of_restaurant_results = (ArrayList<Restaurant>)(session.getAttribute("restaurants"));
+									for (int i = 0; i < list_of_restaurant_results.size(); i++){
+										
+										//The following will get the detailed restaurant information needed to be displayed
+										Restaurant restaurant = list_of_restaurant_results.get(i);
+										String restaurant_name = restaurant.getName();
+										int driveTime = restaurant.getDriveTime();
+										String address = restaurant.getAddress();
+										%> <tr><th><a href="restaurant_page.jsp?restaurant_id=<%= i%>"><%=restaurant_name%></a> </th> <th>Drive Time: <%=driveTime%> min </th> <th><%=address %> </th> <th><%
+												for (int j = 0; j < restaurant.getPriceRange(); j++ ){%>
+													$
+												<% } %></th></tr> <%
+									}
+									%>
+								</div>	
+								<!-- 
+								<tfoot class="hide-if-no-paging">
+									<td colspan="5">
+										<div class="pagination"></div>
+									</td>
+								</tfoot>
+								 -->
+								 
 							</table>
+							
+							<ul id="pagination-demo" class="pagination-lg pull-right"></ul>
 						</div>
 					
 						<!-- The following div is the container for the recipe results table -->
