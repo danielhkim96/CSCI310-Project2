@@ -8,6 +8,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+
 
 /*
  * Servlet: IHManageList
@@ -19,15 +28,75 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/IHManageList")
 public class IHManageList extends HttpServlet {
 
+
 	/**
 	 * search_query for text
 	 * num_results for number of results
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public IHManageList() {
+	// get database name later
+	/*private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/DATABASENAME?user=root&password=&useSSL=false";
+	Connection conn = null;
+	Statement st = null;
+	ResultSet rs = null;
+	PreparedStatement ps = null;*/
+	
+	
+	// favorites
+	// toExplore
+	// doNotShow
+	public IHManageList() throws ClassNotFoundException {
         super();
         // TODO Auto-generated constructor stub
+        
+        /*
+    	try {
+    		
+    		Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
+			ps = conn.prepareStatement(
+					"INSERT INTO List ("
+					+ "listName"
+					+ ") VALUES ('" 
+					+ "favorites"
+					+ "');");
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+    		Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
+			ps = conn.prepareStatement(
+					"INSERT INTO List ("
+					+ "listName"
+					+ ") VALUES ('" 
+					
+					+ "toExplore"
+					+ "');");
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+    		Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
+			ps = conn.prepareStatement(
+					"INSERT INTO List ("
+				
+					+ "listName"
+					+ ") VALUES ('" 
+				
+					+ "doNotShow"
+					+ "');");
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
     }
 	
 	/*
@@ -50,6 +119,45 @@ public class IHManageList extends HttpServlet {
 			response.getWriter().flush();
 			return;
 		}
+		/*
+		 * restaurantID		INT(11)			PRIMARY KEY,
+	restaurantName		VARCHAR(100)	NOT NULL,
+	restaurantAddress	VARCHAR(100)	NOT NULL,
+	restaurantPhone		VARCHAR(100)	NOT NULL,
+	restaurantURL		VARCHAR(100)	NOT NULL
+		 */
+		
+		/*
+		 * recipeID			INT(11)			PRIMARY KEY,
+	recipeName			VARCHAR(100)	NOT NULL,
+	recipeImageURL		VARCHAR(100) 	NOT NULL,
+	recipeCookTime		VARCHAR(50) 	NOT NULL,
+	recipePrepTime		VARCHAR(50)		NOT NULL,
+	recipeInstructions	VARCHAR(1000)	NOT NULL
+		 */
+		/*
+		for(int i = 0; i < recipes.size(); ++i) {
+			try {
+	    		Class.forName("com.mysql.jdbc.Driver");
+				conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
+				ps = conn.prepareStatement(
+						"INSERT INTO Recipe ("
+						+ "recipeID"
+						+ "recipeName"
+						+ "recipeImageURL"
+						+ "recipeCookTime"
+						+ "recipePrepTime"
+						+ "recipePrepTime"
+						+ ") VALUES ('" 
+					
+						+ "doNotShow"
+						+ "');");
+				ps.execute();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}*/
 		String listID = request.getParameter("list_id");
 		String action = request.getParameter("action");
 		
@@ -67,6 +175,7 @@ public class IHManageList extends HttpServlet {
 		
 		if (action.equals("REMOVE")) {
 			String itemID = request.getParameter("item_id");
+			//String indicator = request.getParameter(")
 			removeFromList(listID,itemID);
 			request.getRequestDispatcher("list_management_page.jsp?list_id=" + listID).forward(request, response);
 		}
@@ -156,10 +265,15 @@ public class IHManageList extends HttpServlet {
 
 	/*
 	 * Based on the specified list and item number, it removes it from the list.
-	 */
+	 */ 
 	public void removeFromList(String listID, String itemID) {
 		if (itemID != null && !itemID.equals("")) {
+			// how to identify if from listRestaurants or ListRecipes
 			int index = Integer.parseInt(itemID);
+			/*
+			ps = conn.prepareStatement(
+					"DELETE FROM Follow WHERE user_id=" + user_id + " AND " + "follower_id=" + follower_id);
+			ps.execute();*/
 			if (listID.equals("FAVORITES")) {
 				ListManager.getInstance().removeFromFavorites(index);
 			}
@@ -168,6 +282,9 @@ public class IHManageList extends HttpServlet {
 			}
 			if (listID.equals("DO_NOT_SHOW")) {
 				ListManager.getInstance().removeFromDoNotShow(index);
+			}
+			if (listID.equals("GROCERY_LIST")) {
+				ListManager.getInstance().removeFromGroceryList(index);
 			}
 		}
 		
@@ -179,7 +296,28 @@ public class IHManageList extends HttpServlet {
 	 */
 	public void addToList(String listID, String recipeID, String restaurantID, ArrayList<Recipe> recipes, ArrayList<Restaurant> restaurants) {
 		if (recipeID != null && !recipeID.equals("")) {
+
 			int index = Integer.parseInt(recipeID);
+			/*
+			try {
+	    		Class.forName("com.mysql.jdbc.Driver");
+				conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
+				ps = conn.prepareStatement(
+						"INSERT INTO ListRecipes ("
+						+ "listID, "
+						+ "recipeID"
+						+ ") VALUES ('" 
+						+ Integer.parseInt(listID) + "', '"
+						+ index + "', '"
+						+ "');");
+				ps.execute();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 			if (listID.equals("FAVORITES")) {
 				ListManager.getInstance().addToFavorites(recipes.get(index));
 			}
@@ -189,8 +327,33 @@ public class IHManageList extends HttpServlet {
 			if (listID.equals("DO_NOT_SHOW")) {
 				ListManager.getInstance().addToDoNotShow(recipes.get(index));
 			}
+			if (listID.equals("GROCERY_LIST")) {
+				for(int i = 0; i < recipes.get(index).getIngredients().size(); ++i) {
+					ListManager.getInstance().addToGroceryList(recipes.get(index).getIngredients().get(i));
+				}
+			}
 		} if (restaurantID != null && !restaurantID.equals("")) {
 			int index = Integer.parseInt(restaurantID);
+			/*
+			try {
+	    		Class.forName("com.mysql.jdbc.Driver");
+				conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
+				ps = conn.prepareStatement(
+						"INSERT INTO ListRestaurants ("
+						+ "listID, "
+						+ "restaurantID"
+						+ ") VALUES ('" 
+						+ Integer.parseInt(listID) + "', '"
+						+ index + "', '"
+						+ "');");
+				ps.execute();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 			if (listID.equals("FAVORITES")) {
 				ListManager.getInstance().addToFavorites(restaurants.get(index));
 			}
