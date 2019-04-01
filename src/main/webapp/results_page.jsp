@@ -125,7 +125,7 @@
 							<table id="restaurant_results_table">
 							 <!--  class="footable" data-page-size="10" -->
 							 
-							 	<div class="jumbotron page" id="page1">
+							 	<!--  <div class="jumbotron page" id="page1"> -->
 									<%
 									//Getting restaurant results array list from session
 									if (session.getAttribute("restaurants") == null){
@@ -145,7 +145,7 @@
 												<% } %></th></tr> <%
 									}
 									%>
-								</div>	
+								<!--  </div>	-->
 								<!-- 
 								<tfoot class="hide-if-no-paging">
 									<td colspan="5">
@@ -156,7 +156,7 @@
 								 
 							</table>
 							
-							<ul id="pagination-demo" class="pagination-lg pull-right"></ul>
+							<!--  <ul id="pagination-demo" class="pagination-lg pull-right"></ul>  -->
 						</div>
 					
 						<!-- The following div is the container for the recipe results table -->

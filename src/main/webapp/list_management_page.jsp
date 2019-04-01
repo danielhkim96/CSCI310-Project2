@@ -134,6 +134,9 @@
 			      				else if (list_name.equals("DO_NOT_SHOW")){
 			      					list = ListManager.getInstance().getDoNotShow();
 			      				}
+			      				else if (list_name.equals("GROCERY_LIST")){
+			      					list = ListManager.getInstance().getGroceryList();
+			      				}
 			      				else return;
 			      				
 			      				//The following will iterate through each item and determine if the item is a recipe or a restaurant. 
@@ -186,6 +189,13 @@
 			      						from the current list, and conduct the MOVE or DELETE function -->
 			      						<input type="radio" value=<%=i %> name="only_one_selection">Select <%=restaurant_name %> from this list </input>
 			      						<br></tr><%
+			      					}
+			      					//NEW FOR GROCERY_LIST, if it is neither a Recipe nor Restaurant, then it is an ingredient
+			      					else {
+			      						String ingredient = (String)list.get(i);
+			      						%>
+			      							<tr><th><%=ingredient %></th></tr>
+			      						<%
 			      					}
 			      				}
 			      			

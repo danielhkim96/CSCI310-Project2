@@ -78,3 +78,17 @@ html body {
 
 tr:nth-child(even) {background: Silver}
 tr:nth-child(odd) {background: LightGray}
+
+
+<!-- New for Pagination -->
+
+.container {
+  margin-top: 20px;
+}
+.page {
+  display: none;
+}
+.page-active {
+  display: block;
+}
+
