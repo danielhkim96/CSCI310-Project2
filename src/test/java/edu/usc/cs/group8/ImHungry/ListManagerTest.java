@@ -5,7 +5,31 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class ListManagerTest {
-
+	
+	@Test
+	public void testGroceryList() {
+		ListManager.getInstance().reset();
+		IHSearch search = new IHSearch();
+		Recipe myRecipe = RecipeGetter.parseRecipe(RecipeGetter.readRecipe("https://dinnerthendessert.com/general-tsos-chicken/"));
+		//Restaurant myRestaurant = search.doRestaurantSearch("spaghetti", "1").get(0);
+		for(int i = 0; i < myRecipe.getIngredients().size(); ++i) {
+			//System.out.println(myRecipe.getIngredients().get(i));
+			ListManager.getInstance().addToGroceryList(myRecipe.getIngredients().get(i));
+		}
+		
+		//ListManager.getInstance().addToFavorites(myRestaurant);
+		assertEquals(ListManager.getInstance().getGroceryList().size(),13);
+		assertEquals(ListManager.getInstance().getGroceryList(), myRecipe.getIngredients());
+		
+		assertTrue(ListManager.getInstance().groceryListContains("1/4 cup cornstarch"));
+		//assertTrue(ListManager.getInstance().favoritesContains(myRestaurant));
+		ListManager.getInstance().removeFromGroceryList(0);
+		assertEquals(ListManager.getInstance().getGroceryList().size(),12);
+		assertFalse(ListManager.getInstance().groceryListContains("1 pound chicken thighs cut into 1 inch chunks"));
+		//assertFalse(ListManager.getInstance().favoritesContains(myRestaurant));*/
+	}
+	
+	/*
 	@Test
 	public void testFavorites() {
 		ListManager.getInstance().reset();
@@ -70,6 +94,6 @@ public class ListManagerTest {
 		assertEquals(ListManager.getInstance().getDoNotShow().size(),0);
 		assertFalse(ListManager.getInstance().doNotShowContains(myRecipe));
 		assertFalse(ListManager.getInstance().doNotShowContains(myRestaurant));
-	}
+	}*/
 
 }
