@@ -50,7 +50,12 @@ public class IHSearch extends HttpServlet {
 		
 		ArrayList<String> images = doImageSearch(keyword);
 		ArrayList<Recipe> recipes = doRecipeSearch(keyword,number);
-		ArrayList<Restaurant> restaurants = doRestaurantSearch(keyword,number);
+		ArrayList<Restaurant> restaurants = null;
+		if (radius == null || radius.equals("")) {
+			restaurants = doRestaurantSearch(keyword,number);
+		} else {
+			restaurants = doRestaurantSearch(keyword,number,radius);
+		}
 		
 		if (images != null && recipes != null && restaurants != null) {
 			sortRecipes(recipes);
@@ -132,6 +137,81 @@ public class IHSearch extends HttpServlet {
 			}
 		return restaurants;
 	}
+	
+	/*
+	 * The overloaded restaurant search makes a nearby search request for restaurants within
+	 * the specified radius.
+	 */
+	public ArrayList<Restaurant> doRestaurantSearch(String keyword, String number, String radius) {
+		ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+		
+		//add "+" to keyword string
+		keyword = keyword.replaceAll(" ", "+").toLowerCase();
+		
+		//set url for Google Nearby Search API request
+		String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
+				+ "location=34.020593,-118.285447"
+				+ "&type=restaurant"
+				+ "&rankby=distance"
+				+ "&keyword=" + keyword
+				+ "&key=AIzaSyCe6MRPk3bmzAC476OWtgbH91rJ8hWwRyA\n";
+		
+			String json_string = readWebsite(url);
+			if (json_string == null) return null;
+
+			//Parse the JSON file to retrieve relevant Restaurants
+			JSONObject mainObj= new JSONObject(json_string);
+			JSONArray jsonArray = (JSONArray) mainObj.get("results");
+
+			//Gets the number of results to returns and adds 3 for padding if some are in do not show list, stored in session
+			int check = Integer.parseInt(number) + 3;
+			//checks to see if the query returned less than the number of results to return.
+			if (jsonArray.length()<check)
+				check = jsonArray.length(); 
+			
+			for (int i = 0; restaurants.size() < Integer.parseInt(number) && i < check; i++) {
+				JSONObject iterate_obj = (JSONObject) jsonArray.get(i);
+				String id = (String) iterate_obj.get("place_id");
+				String name = (String) iterate_obj.get("name");
+				JSONObject geometry = (JSONObject) iterate_obj.get("geometry");
+				JSONObject location = (JSONObject) geometry.get("location");
+				Double lat = (Double) location.get("lat");
+				Double lng = (Double) location.get("lng");
+				if (haversine(lat, lng, 34.020593, -118.285447) > Double.parseDouble(radius) * 1.60934) {
+					break;
+				}
+				Restaurant temp = new Restaurant(name,id);
+				if (temp != null && !ListManager.getInstance().doNotShowContains(temp) && !restaurants.contains(temp)) {
+					restaurants.add(temp);
+				}
+			}
+
+			//Populate the array of Restaurant objects with the rest of the required info
+			for (int i =0; i < restaurants.size();i++) {
+				Restaurant curr_restaurant = restaurants.get(i);
+				curr_restaurant = RestaurantGetter.getContactInfo(curr_restaurant); 
+				curr_restaurant = RestaurantGetter.getDriveTime(curr_restaurant);   
+				restaurants.set(i, curr_restaurant);                                
+			}
+		return restaurants;
+	}
+	
+	
+	/*
+	 * This code was borrowed from https://rosettacode.org/wiki/Haversine_formula#Java
+	 * to calculate the great-circle distance between two points on Earth from their longitudes
+	 * and latitudes.
+	 */
+	public static double haversine(double lat1, double lng1, double lat2, double lng2) {
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+ 
+        double a = Math.pow(Math.sin(dLat / 2),2) + Math.pow(Math.sin(dLng / 2),2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return 6371 * c;
+    }
 
 	/*
 	 * This sends a request out to Google for one hundred recipes, then parses in as many
