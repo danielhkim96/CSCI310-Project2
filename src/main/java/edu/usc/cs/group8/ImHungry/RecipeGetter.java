@@ -117,7 +117,7 @@ public class RecipeGetter {
 			img = "";
 		}
 		
-		JsonArray jsonIngredients, jsonInstructions, jsonGroceryList; 
+		JsonArray jsonIngredients, jsonInstructions; 
 		try{
 			jsonIngredients = bigRecipe.get("recipeIngredient").getAsJsonArray();
 		} catch (Exception e) {
@@ -136,17 +136,6 @@ public class RecipeGetter {
 				jsonInstructions.add(bigRecipe.get("recipeInstructions"));
 			} catch (Exception f) {
 				jsonInstructions.add("No instructions available.");
-			}
-		}
-		
-		try {
-			jsonGroceryList = bigRecipe.get("recipeGroceryList").getAsJsonArray();
-		} catch (Exception e) {
-			jsonGroceryList = new JsonArray();
-			try {
-				jsonGroceryList.add(bigRecipe.get("recipeGroceryList"));
-			} catch (Exception f) {
-				jsonGroceryList.add("No grocery list available.");
 			}
 		}
 		
@@ -174,16 +163,8 @@ public class RecipeGetter {
 				}
 			}
 		}
-		ArrayList<String> groceryList = new ArrayList<String>();
-		for (int i = 0; i < jsonGroceryList.size(); i++) {
-			try {
-				groceryList.add(jsonGroceryList.get(i).getAsString());
-			}
-			catch (Exception e) {
-				groceryList.add("Ingredients could not be parsed.");
-			}
-		}
-		return new Recipe(name,prepTime,cookTime,img,ingredients,instructions, groceryList);
+		return new Recipe(name,prepTime,cookTime,img,ingredients,instructions);
 	}
+	
 	
 }

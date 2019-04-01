@@ -32,7 +32,7 @@
 					<span></span>
 					<input class="form-control form-control-borderless" id="ex2" data-toggle="tooltip" title="Number of items to show in results" data-placement="right" type="number" min="1" value="5" name="num_results" >
 					<!-- <span class="tooltiptext">Number of items to show in results</span> -->
-					<input class="form-control form-control-borderless" data-toggle="tooltip" title="Radius you wish to search for restaurants" type="number" name="radius">
+					<input class="form-control form-control-borderless" data-toggle="tooltip" title="Radius you wish to search for restaurants" type="number" min="1" value="5" name="radius">
 				 </div>
 	          	</form> 
 	        </div>

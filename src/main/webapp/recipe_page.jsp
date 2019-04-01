@@ -45,6 +45,7 @@
 			        <a class="dropdown-item" href="#">Favorites</a>
 			        <a class="dropdown-item" href="#">To Explore</a>
 			        <a class="dropdown-item" href="#">Do Not Show</a>
+			        <a class="dropdown-item" href="#">Grocery List</a>
 			      </div>
 				<!-- Function to populate the empty dropdown list title with the list that is selected-->
 			      <script>
@@ -66,8 +67,8 @@
 				        else if($("#btnGroupVerticalDrop2").text() =="To Explore") {
 				        	list_id = "TO_EXPLORE";
 				        }
-				        else {
-				        	list_id = "DO_NOT_SHOW"; 
+				        else if ($("#btnGroupVerticalDrop2").text() =="Grocery List") {
+				        	list_id = "GROCERY_LIST"; 
 				        }
 					 //send to servlet
 				        location.href = "IHManageList?action=ADD&list_id=" + list_id + "&recipe_id="+<%=request.getParameter("recipe_id")%>+"&restaurant_id=";	

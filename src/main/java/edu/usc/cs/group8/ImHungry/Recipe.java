@@ -24,7 +24,6 @@ public class Recipe extends Result implements Serializable{
 	private String imgURL;
 	private ArrayList<String> ingredients;
 	private ArrayList<String> instructions;
-	private ArrayList<String> groceryList;
 	
 	/*
 	 * These will be calculated as we go along from the raw data
@@ -36,14 +35,13 @@ public class Recipe extends Result implements Serializable{
 	 * It is assumed that the Json provides all information
 	 * (see RecipeGetter)
 	 */
-	public Recipe(String name, String prepTime, String cookTime, String imgURL, ArrayList<String> ingredients, ArrayList<String> instructions, ArrayList<String> groceryList) {
+	public Recipe(String name, String prepTime, String cookTime, String imgURL, ArrayList<String> ingredients, ArrayList<String> instructions) {
 		super.setName(name);
 		this.prepTimeText = prepTime;
 		this.cookTimeText = cookTime;
 		this.imgURL = imgURL;
 		this.ingredients = ingredients;
 		this.instructions = instructions;
-		this.groceryList = groceryList;
 		prepTimeInt = parsePrepTime(prepTimeText);
 		cookTimeInt = parsePrepTime(cookTimeText);
 	}
@@ -139,14 +137,6 @@ public class Recipe extends Result implements Serializable{
 		this.instructions = instructions;
 	}
 	
-	public ArrayList<String> getGroceryList() {
-		return groceryList;
-	}
-
-	public void setGroceryList(ArrayList<String> groceryList) {
-		this.groceryList = groceryList;
-	}
-	
 	public String toString() {
 		return super.getName() + "\n" + prepTimeInt + "\n" + cookTimeInt + "\n" + ingredients + "\n" + instructions + "\n";
 	}
@@ -181,11 +171,6 @@ public class Recipe extends Result implements Serializable{
 			if (other.instructions != null)
 				return false;
 		} else if (!instructions.equals(other.instructions))
-			return false;
-		if (groceryList == null) {
-			if (other.groceryList != null)
-				return false;
-		} else if (!groceryList.equals(other.groceryList))
 			return false;
 		if (cookTimeInt != other.cookTimeInt)
 			return false;
