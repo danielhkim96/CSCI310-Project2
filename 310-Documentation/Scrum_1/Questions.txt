@@ -1,0 +1,14 @@
+1. What have you accomplished since the last meeting?
+- N/A
+
+2. Are there any obstacles in the way of meeting your goal?
+- Incomplete implementation of requirements/specifications of project 1 code and difficulties associated with merging different project 1 code bases.
+
+3. What will you accomplish before the next meeting?
+Daniel Kim: Create database schema
+
+Yvette Lopez: Draft Cucumber tests for pagination of results, grocery list, and Restaurant Search
+
+Samuel He: Draft JUnit Tests for the following requirements: grocery list, Restaurant Search, View results of prior searches by clicking on a quick access list that shows prior search terms, and Set the radius of the restaurant search.
+
+Xubo Zhu: Get working copy of I'm Hungry website
