@@ -2,6 +2,7 @@ package edu.usc.cs.group8.ImHungry;
 
 import java.util.ArrayList;
 
+
 /*
  * ListManager.java
  * Class that contains the three predefined lists as well as specific functions for accessing them.
@@ -14,6 +15,7 @@ public class ListManager {
 	private ArrayList<Result> favorites;
 	private ArrayList<Result> toExplore;
 	private ArrayList<Result> doNotShow;
+	private ArrayList<String> groceryList;
 	
 	private static ListManager singleton;
 	
@@ -21,6 +23,7 @@ public class ListManager {
 		favorites = new ArrayList<Result>();
 		toExplore = new ArrayList<Result>();
 		doNotShow = new ArrayList<Result>();
+		groceryList = new ArrayList<String>();
 	}
 	
 	/*
@@ -45,6 +48,10 @@ public class ListManager {
 		if (!doNotShow.contains(r)) doNotShow.add(r);
 	}
 	
+	public void addToGroceryList(String r) {
+		if (!groceryList.contains(r)) groceryList.add(r);
+	}
+	
 	public void removeFromFavorites(Result r) {
 		if (favoritesContains(r))
 			favorites.remove(r);
@@ -59,6 +66,12 @@ public class ListManager {
 	public void removeFromDoNotShow(Result r) {
 		if (doNotShowContains(r)) {
 			doNotShow.remove(r);
+		}
+	}
+	
+	public void removeFromGroceryList(String r) {
+		if (groceryListContains(r)) {
+			groceryList.remove(r);
 		}
 	}
 	
@@ -77,6 +90,11 @@ public class ListManager {
 			doNotShow.remove(index);
 	}
 	
+	public void removeFromGroceryList(int index){
+		if (groceryList.size() > index)
+			groceryList.remove(index);
+	}
+	
 	public boolean favoritesContains(Result r) {
 		return favorites.contains(r);
 	}
@@ -87,6 +105,10 @@ public class ListManager {
 	
 	public boolean doNotShowContains(Result r) {
 		return doNotShow.contains(r);
+	}
+	
+	public boolean groceryListContains(String r) {
+		return groceryList.contains(r);
 	}
 	
 	public ArrayList<Result> getFavorites(){
@@ -101,10 +123,15 @@ public class ListManager {
 		return doNotShow;
 	}
 	
+	public ArrayList<String> getGroceryList(){
+		return groceryList;
+	}
+	
 	public void reset() {
 		favorites.clear();
 		toExplore.clear();
 		doNotShow.clear();
+		groceryList.clear();
 	}
 
 }

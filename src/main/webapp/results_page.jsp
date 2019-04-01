@@ -48,6 +48,7 @@
 			        			<a class="dropdown-item" href="#">Favorites</a>
 			        			<a class="dropdown-item" href="#">To Explore</a>
 			        			<a class="dropdown-item" href="#">Do Not Show</a>
+			        			<a class="dropdown-item" href="#">Grocery List</a>
 			      			</div>
 			      			<script>
 			      				//This is a helper fuction that will help to make the dropdown menu look nicer
@@ -81,6 +82,9 @@
 											}
 											else if (chosen_list == "Do Not Show"){
 												list_name = "DO_NOT_SHOW";
+											}
+											else if (chosen_list == "Grocery List"){
+												list_name = "GROCERY_LIST";
 											}
 											
 											//Redirect the user to the chosen list

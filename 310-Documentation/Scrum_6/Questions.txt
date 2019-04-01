@@ -1,0 +1,26 @@
+1. What have you accomplished since the last meeting?
+Samuel He: Drafted changes to backend to prepare integration with database.
+
+Daniel Kim: Got working code for basic user login functionality.
+
+Yvette Lopez: Still trying to get the program to run on my machine. In the meantime, redid some of the black-box testing. To reflect the newest changes with the front end.
+
+Xubo Zhu: Starting to implement the frontend pagination functionality on the result page. 
+
+2. Are there any obstacles in the way of meeting your goal?
+Samuel He: None.
+
+Daniel Kim: How exactly to implement user functionality for the rest of the application.
+
+Yvette Lopez: None.
+
+Xubo Zhu: None.
+
+3. What will you accomplish before the next meeting?
+Samuel He: Finish integration of database and backend. 
+
+Daniel Kim: Write code to store and retrieve list information when a user logs in.
+
+Yvette Lopez: Finish the black box testing, make sure all the features pass their tests.
+
+Xubo Zhu: Finish the pagination functionality and ready to demo. 

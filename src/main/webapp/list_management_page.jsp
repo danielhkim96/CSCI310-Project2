@@ -53,6 +53,8 @@
 						        <a class="dropdown-item" href="javascript:void(0);">Favorites</a>
 						        <a class="dropdown-item" href="javascript:void(0);">To Explore</a>
 						        <a class="dropdown-item" href="javascript:void(0);">Do Not Show</a>
+						        <a class="dropdown-item" href="javascript:void(0);">Grocery List</a>
+						        
 						      </div>
 			      			<script>
 			      				//The following code will get the name of the list that the user has chosen from the dropdown menu
@@ -87,6 +89,10 @@
 											else if (chosen_list == "Do Not Show"){
 												list_name = "DO_NOT_SHOW";
 											}
+											else if (chosen_list == "Grocery List"){
+												list_name = "GROCERY_LIST"
+											}
+												
 											//Redirect the user to the chosen list
 											location.href = "list_management_page.jsp?list_id=" + list_name;
 										}

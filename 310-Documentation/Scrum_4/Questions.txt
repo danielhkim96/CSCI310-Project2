@@ -5,6 +5,8 @@ Daniel Kim: Got working code to set the radius for the restaurant search
 
 Yvette Lopez: Got the I’m Hungry website on my machine, starting modify the cucumber tests to fit the front-end.
 
+Xubo Zhu: Started coding pagination of results
+
 2. Are there any obstacles in the way of meeting your goal?
 Samuel He: None
 
@@ -12,9 +14,13 @@ Daniel Kim: None
 
 Yvette Lopez: None
 
+Xubo Zhu: None
+
 3. What will you accomplish before the next meeting?
 Samuel He: Finish all JUnit tests and start coding implementation of features in the backend; specifically: Implementing the grocery list
 
 Daniel Kim: Work on the frontend for setting the radius of the restaurant search and if there is time, start on user login functionality, which we believe will be needed to maintain information beyond a single session
 
 Yvette Lopez: Modify the step definitions so that they fit the I’m Hungry website’s front-end. Have the cucumber tests run for all three requirements we’re implementing for this sprint.
+
+Xubo Zhu: Keep implementing pagination

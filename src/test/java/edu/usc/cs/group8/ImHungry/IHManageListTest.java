@@ -148,7 +148,7 @@ public class IHManageListTest {
 	}
 
 	@Test
-	public void testAddToList() {
+	public void testAddToList() throws ClassNotFoundException {
 		ListManager.getInstance().reset();
 
 		IHSearch search = new IHSearch();
@@ -177,7 +177,7 @@ public class IHManageListTest {
 	}
 	
 	@Test
-	public void testRemoveFromList() {
+	public void testRemoveFromList() throws ClassNotFoundException {
 		ListManager.getInstance().reset();
 		IHSearch search = new IHSearch();
 		ArrayList<Recipe> oldRecipes = search.doRecipeSearch("falafel", "3");
@@ -213,7 +213,7 @@ public class IHManageListTest {
 	}
 	
 	@Test
-	public void testMoveToList() {
+	public void testMoveToList() throws ClassNotFoundException {
 		ListManager.getInstance().reset();
 		
 		IHManageList manager = new IHManageList();
