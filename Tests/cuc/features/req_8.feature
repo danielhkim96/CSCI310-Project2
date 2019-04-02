@@ -1,3 +1,5 @@
+Feature: Radius Search
+
 Background:
 	Given I am on the search page
 
@@ -26,7 +28,7 @@ Scenario: Search with No Radius
 	When I type "tacos" into the search bar
 	And I type "5" into the number bar
 	And click search
-	Then I should be on the "Search" page
+	Then I should be on the "Results" page
 
 Scenario: Results page only displays restaurants within the given radius
 	When I type "tacos" into the search bar
