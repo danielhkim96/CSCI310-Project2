@@ -1,10 +1,3 @@
-#Given("I search for {string} restults for {string}") do |string, string2|
-#  visit 'http://localhost:8080/ImHungry/search_page.jsp'
-#  fill_in 'search_query', :with => string2
-#  fill_in 'num_results', :with => string
-#  click_on("Submit")
-#end
-
 Given("I search for {string} results for {string}") do |string, string2|
   visit 'http://localhost:8080/ImHungry/search_page.jsp'
   fill_in 'search_query', :with => string2
@@ -24,42 +17,41 @@ When("I click {string}") do |string|
   click_on(string)
 end
 
-When("I select the first recipe") do
-  pending # Write code here that turns the phrase above into concrete actions
-end
-
 When("I navigate to the Grocery page") do
-  pending # Write code here that turns the phrase above into concrete actions
+  click_on("Back to Results")
+  select "Grocery List", :from => "btnGroupVerticalDrop2"
+  click_on("Manage List")
 end
 
-Then("I should see the ingredients from the recipe") do
-  pending # Write code here that turns the phrase above into concrete actions
+When("I add to Grocery List") do
+  select "Grocery List", :from => "btnGroupVerticalDrop2"
+  click_on("Add to list")
 end
 
 Given("I am on the search page") do
-  pending # Write code here that turns the phrase above into concrete actions
+  visit 'http://localhost:8080/ImHungry/search_page.jsp'
 end
 
 When("I type {string} into the search bar") do |string|
-  pending # Write code here that turns the phrase above into concrete actions
+  fill_in 'search_query', :with => string
 end
 
 When("I type {string} into the number bar") do |string|
-  pending # Write code here that turns the phrase above into concrete actions
+  fill_in 'num_results', :with => string
 end
 
 When("I type {string} into the radius bar") do |string|
-  pending # Write code here that turns the phrase above into concrete actions
+  fill_in 'radius', :with => string
 end
 
 When("click search") do
-  pending # Write code here that turns the phrase above into concrete actions
+  click_on("Feed Me!")
 end
 
 Then("I should be on the {string} page") do |string|
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(page).to have_current_path(string)
 end
 
-Then("I should NOT see a radius over {int}") do |int|
-  pending # Write code here that turns the phrase above into concrete actions
+Then("I should see less than {int} results") do |int|
+  expect(page).to have_content("Jerk Chicken", count:0)
 end
