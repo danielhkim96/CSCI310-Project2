@@ -1,7 +1,7 @@
 Feature: Grocery List Requirement
 
 Scenario: Adding a recipe to the Grocery List
-  Given I search for "3" results for "tacos"
+  Given I search for "2" results for "tacos"
   When I click "Best Ground Beef Taco Meat"
   And I add to Grocery List
   And I click "Back to Results"
@@ -12,7 +12,7 @@ Scenario: Adding a recipe to the Grocery List
   And I should see "1 tbsp olive oil"
 
 Scenario: Adding the same recipe twice
-  Given I search for "3" results for "tacos"
+  Given I search for "2" results for "tacos"
   When I click "Best Ground Beef Taco Meat"
   And I add to Grocery List
   And I add to Grocery List
