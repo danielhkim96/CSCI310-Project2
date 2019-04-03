@@ -11,6 +11,7 @@ public class RestaurantTest {
 	@Test
 	public void testConstructor() {
 		Restaurant myRestaurant = new Restaurant("Food", 20, "food.com", "123 Main Street", "555-555-5585", 1, 4.2,"id123");
+		Restaurant temp = new Restaurant();
 		assertEquals(myRestaurant.getName(),"Food");
 		assertEquals(myRestaurant.getDriveTime(),20);
 		assertEquals(myRestaurant.getWebsiteURL(),"food.com");
@@ -19,7 +20,7 @@ public class RestaurantTest {
 		assertEquals(myRestaurant.getPriceRange(),1);
 		assertEquals(myRestaurant.getId(),"id123");
 		assertEquals(myRestaurant.getRating(),4.2,0.001);
-		
+		//assertEquals(myRestaurant.equals(temp), true);
 	}
 	
 	@Test

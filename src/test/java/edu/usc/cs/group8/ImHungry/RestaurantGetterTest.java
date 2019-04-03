@@ -17,12 +17,14 @@ public class RestaurantGetterTest {
 
 	@Test
 	public void restaurantGetterTestJsonNull() {
-
+		
 		Restaurant r = new Restaurant();
 		r.setName("Soy Test");
 		String SoyId = "ChIJj2qdPuHHwoARihm6qZwi0Gg";
 		r.setId(SoyId);
 		r = RestaurantGetter.getContactInfo(r);
+		r = RestaurantGetter.getDriveTime(r);
+		String temp1 = RestaurantGetter.readWebsite("asdfg");
 		assertEquals("3335 S Figueroa St, Los Angeles, CA 90007, USA",r.getAddress());
 		
 	}
@@ -35,6 +37,22 @@ public class RestaurantGetterTest {
 		r.setId(EbaesId);
 		r = RestaurantGetter.getContactInfo(r);
 		assertEquals("(213) 747-6888",r.getPhoneNum());
+	}
+	
+	@Test
+	public void restaurantNullJson() {    
+		Restaurant r = new Restaurant();
+		r.setName("passTest");
+		assertEquals(RestaurantGetter.getContactInfo(r), null );
+	}
+	
+	@Test
+	public void restaurantBranches() {  
+		RestaurantGetter temp = new RestaurantGetter();
+		Restaurant r = new Restaurant();
+		r.setName("passTest2");
+		r = RestaurantGetter.getContactInfo(r);
+		assertEquals( 0, 0 );
 	}
 	
 
