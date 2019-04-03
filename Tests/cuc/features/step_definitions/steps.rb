@@ -18,13 +18,15 @@ When("I click {string}") do |string|
 end
 
 When("I navigate to the Grocery page") do
-  click_on("Back to Results")
-  select "Grocery List", :from => "btnGroupVerticalDrop2"
+  find('#btnGroupVerticalDrop2').click
+  click_on("Grocery List")  
   click_on("Manage List")
+  find('#manage_list_button').click
 end
 
 When("I add to Grocery List") do
-  select "Grocery List", :from => "btnGroupVerticalDrop2"
+  find('#btnGroupVerticalDrop2').click
+  click_on("Grocery List")  
   click_on("Add to list")
 end
 
