@@ -57,3 +57,7 @@ end
 Then("I should see less than {int} results") do |int|
   expect(page).to have_content("Jerk Chicken", count:0)
 end
+
+Then ("I should see {int} results") do |int|
+	expect(page).to have_content("Prep Time:", int)
+end
