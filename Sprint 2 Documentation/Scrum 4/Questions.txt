@@ -1,0 +1,28 @@
+What have you accomplished since the last meeting?
+Samuel He: Finished integrating database with JUnit tests. Drafted white-box tests for reordering the lists.
+
+Daniel Kim: Finished implementation of login and signup.
+
+Yvette Lopez: Finished drafting the black-box tests for reordering the lists 
+
+Xubo Zhu: Managed to implement an online framework of pagination using bootstrap and solodev. But when the pagination bar show up on screen, the drop-down menu fails to show up, probably due to the conflicts in the imported javascript libraries.
+
+
+Are there any obstacles in the way of meeting your goal?
+Samuel He: Database schema was incompatible with some backend functions. Schema was changed.
+
+Daniel Kim: Not very experienced with frontend.
+
+Yvette Lopez: Not too familiar with the website code given that my main tasks so far have been testing.
+
+Xubo Zhu: Conflicts in the imported javascript libraries to cause that the pagination framework fails to work along with our already imported functions. 
+
+
+What will you accomplish before the next meeting?
+Samuel He: Finish integrating database with backend. Work on login functionality. 
+
+Daniel Kim: Get started on making the UI look modern and attractive.
+
+Yvette Lopez: Modify existing tests to make sure the UI changes don’t screw with any black box testing. Research how to reorder the lists.
+
+Xubo Zhu: Will have to figure out how to resolve the conflicts in the libraries or do the implementation on our own without using online frameworks (may be not as beautiful).
