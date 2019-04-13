@@ -1,0 +1,28 @@
+What have you accomplished since the last meeting?
+Samuel He: Edited schema to be more compatible with backend database integration.
+
+Daniel Kim: Developed frontend code for the login/signup page.
+
+Yvette Lopez: UI tests are in the clear. Explained how we could implement editing the order of list items to Hiro
+
+Xubo Zhu: Implemented the pagination without using the online frameworks but by ourselves. Started working on Reordering the predefined lists, made the items in the drop-down menu draggable. 
+
+
+Are there any obstacles in the way of meeting your goal?
+Samuel He: None.
+	
+Daniel Kim: sendRedirect() and forward() didn’t work for some reason.
+
+Yvette Lopez: None
+
+Xubo Zhu: Had difficulties in making the draggable drop-down items work completely. Dragging works but it doesn’t drop on desired positions. 
+
+
+What will you accomplish before the next meeting?
+Samuel He: Finish database integration and communicate with frontend on changes that need to be made to make database compatible with application as a whole.
+
+Daniel Kim: Make sure that when a user logs in, the username is passed to each page to maintain information beyond a single session.
+
+Yvette Lopez: Make sure the black-box tests for pagination accurately map to the front end
+
+Xubo Zhu: Try to finish reordering of predefined lists. 
