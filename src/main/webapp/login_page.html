@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<link href="login_page.css" type="text/css" rel="stylesheet"/>
+		
+		<script>
+			$(document).ready(function() {
+				$('.message a').on('click', function() {
+					$('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+				});
+			});
+			
+			function validate(x) {
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("POST", "LoginServlet");
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				if (x === "register") {
+					xhttp.send("email=" + document.forms["register"]["email"].value +
+							   "&password=" + document.forms["register"]["password"].value +
+							   "&action=" + document.forms["register"]["action"].value);
+				} else {
+					xhttp.send("email=" + document.forms["login"]["email"].value +
+							   "&password=" + document.forms["login"]["password"].value +
+							   "&action=" + document.forms["login"]["action"].value);
+				}
+				
+				console.log(xhttp.responseText);
+
+				if (xhttp.responseText.trim().length > 0) {
+					alert(xhttp.responseText);
+					return false;
+				} else {
+					return true;
+				}
+/* 				if (x === "register") {
+					$.ajax({
+					    type: "POST",
+						url: "LoginServlet",
+						data: {
+							'email': document.forms["register"]["email"].value,
+							'password': document.forms["register"]["password"].value,
+							'action': document.forms["register"]["action"].value
+						},
+						success: function(result) {
+							console.log("Data sent");
+						}
+					});
+				} else {
+					$.ajax({
+					    type: "POST",
+						url: "LoginServlet",
+						data: {
+							'email': document.forms["login"]["email"].value,
+							'password': document.forms["login"]["password"].value,
+							'action': document.forms["login"]["action"].value
+						},
+						success: function(result) {
+							console.log("Data sent");
+						}
+					});
+				}
+			} */
+		</script>
+	</head>
+	<body>
+		<div class="login-page">
+			<div class="form">
+			    <form name="register" class="register-form" method="post" onsubmit="return false">
+					<input name="email" type="text" placeholder="email address" aria-describedby="errorEmail" required pattern="[^]+@[^]+[.][a-z]{2,63}$"/>
+					<input name="password" type="password" placeholder="password"/>
+					<!-- <input name="password" type="password" placeholder="re-enter password"/> -->
+					<input name="action" type="hidden" value="register"/>
+					<input type="submit" onclick="return validate(form.name)" value="create"/>
+					<!-- <button onclick="return validate()">create</button> -->
+					<p class="message" id="register">Already registered? <a href="#">Sign In</a></p>
+			    </form>
+		    	<form name="login" class="login-form" method="post" onsubmit="return false">
+					<input name="email" type="text" placeholder="email address" aria-describedby="errorEmail" required pattern="[^]+@[^]+[.][a-z]{2,63}$"/>
+					<input name="password" type="password" placeholder="password"/>
+					<input name="action" type="hidden" value="login"/>
+					<input type="submit" onclick="return validate(form.name)" value="login"/>
+					<!-- <button onclick="return validate()">login</button> -->
+					<p class="message" id="login">Not registered? <a href="#">Create an account</a></p>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>
