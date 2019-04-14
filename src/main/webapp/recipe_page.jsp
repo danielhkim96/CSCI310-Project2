@@ -67,6 +67,9 @@
 				        else if($("#btnGroupVerticalDrop2").text() =="To Explore") {
 				        	list_id = "TO_EXPLORE";
 				        }
+				        else if ($("#btnGroupVerticalDrop2").text() =="Do Not Show") {
+				        	list_id = "DO_NOT_SHOW";
+				        }
 				        else if ($("#btnGroupVerticalDrop2").text() =="Grocery List") {
 				        	list_id = "GROCERY_LIST"; 
 				        }

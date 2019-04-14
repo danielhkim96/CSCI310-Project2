@@ -23,7 +23,7 @@ public class RestaurantGetter {
 		String url = "https://maps.googleapis.com/maps/api/place/details/json?"
 				+ "placeid=" + r.getId()
 				+ "&fields=name,rating,formatted_phone_number,formatted_address,website,price_level"
-				+ "&key=AIzaSyCe6MRPk3bmzAC476OWtgbH91rJ8hWwRyA\n";
+				+ "&key=AIzaSyB3DwFgmdxRDt_IAFxo9hUzBTF2LG0F7cg\n";
 
 			String json_string = readWebsite(url);
 
@@ -88,7 +88,7 @@ public class RestaurantGetter {
 				+ "units=imperial"
 				+ "&origins=801+Childs+Way+Los+Angeles"
 				+ "&destinations=" + address
-				+ "&key=AIzaSyCe6MRPk3bmzAC476OWtgbH91rJ8hWwRyA\n";
+				+ "&key=AIzaSyB3DwFgmdxRDt_IAFxo9hUzBTF2LG0F7cg\n";
 		
 			String json_string = readWebsite(url);
 			if (json_string == null) return null;
