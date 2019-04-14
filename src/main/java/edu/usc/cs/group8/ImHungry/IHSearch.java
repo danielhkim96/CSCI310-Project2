@@ -64,6 +64,8 @@ public class IHSearch extends HttpServlet {
 			request.getSession().setAttribute("recipes", recipes);
 			request.getSession().setAttribute("restaurants", restaurants);
 			request.getSession().setAttribute("query", keyword);
+			//new for pagination
+			request.getSession().setAttribute("num_results", number);
 			request.getRequestDispatcher("results_page.jsp").forward(request, response);
 		}
 		
@@ -103,7 +105,7 @@ public class IHSearch extends HttpServlet {
 				+ "&type=restaurant"
 				+ "&rankby=distance"
 				+ "&keyword=" + keyword
-				+ "&key=AIzaSyCe6MRPk3bmzAC476OWtgbH91rJ8hWwRyA\n";
+				+ "&key=AIzaSyB3DwFgmdxRDt_IAFxo9hUzBTF2LG0F7cg\n";
 		
 			String json_string = readWebsite(url);
 			if (json_string == null) return null;
@@ -154,7 +156,7 @@ public class IHSearch extends HttpServlet {
 				+ "&type=restaurant"
 				+ "&rankby=distance"
 				+ "&keyword=" + keyword
-				+ "&key=AIzaSyCe6MRPk3bmzAC476OWtgbH91rJ8hWwRyA\n";
+				+ "&key=AIzaSyB3DwFgmdxRDt_IAFxo9hUzBTF2LG0F7cg\n";
 		
 			String json_string = readWebsite(url);
 			if (json_string == null) return null;
