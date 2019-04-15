@@ -27,15 +27,21 @@
 		<title>Results for <%= session.getAttribute("query") %></title>
 		
 		<style>
+			.center {
+			  text-align: center;
+			}
+			
 			.pagination {
 			  display: inline-block;
 			}
 			
 			.pagination a {
+			  border: 1px solid #ddd; /* Gray */
 			  color: black;
 			  float: left;
 			  padding: 8px 16px;
 			  text-decoration: none;
+			  
 			}
 			
 			.pagination a.active {
@@ -56,6 +62,7 @@
 	
 		<script type="text/javascript">
 		$(document).ready(function() {
+			
 		$('#pagination-demo').twbsPagination({
 		totalPages: 5,
 		// the current page that show on start
@@ -89,7 +96,90 @@
 		activeClass: 'active',
 		disabledClass: 'disabled'
 		});
+		
 		});
+		
+		
+		
+		//draggable items in the dropdown menu: "Reorder any of the three lists"
+		var dragSrcEl = null;
+
+		function handleDragStart(e) {
+		  // Target (this) element is the source node.
+		  dragSrcEl = this;
+		
+		  e.dataTransfer.effectAllowed = 'move';
+		  e.dataTransfer.setData('text/html', this.outerHTML);
+		
+		  this.classList.add('dragElem');
+		}
+		function handleDragOver(e) {
+		  if (e.preventDefault) {
+		    e.preventDefault(); // Necessary. Allows us to drop.
+		  }
+		  this.classList.add('over');
+		
+		  e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+		
+		  return false;
+		}
+		
+		function handleDragEnter(e) {
+		  // this / e.target is the current hover target.
+		}
+		
+		function handleDragLeave(e) {
+		  this.classList.remove('over');  // this / e.target is previous target element.
+		}
+		
+		function handleDrop(e) {
+		  // this/e.target is current target element.
+		
+		  if (e.stopPropagation) {
+		    e.stopPropagation(); // Stops some browsers from redirecting.
+		  }
+		
+		  // Don't do anything if dropping the same column we're dragging.
+		  if (dragSrcEl != this) {
+		    // Set the source column's HTML to the HTML of the column we dropped on.
+		    //alert(this.outerHTML);
+		    dragSrcEl.innerHTML = this.innerHTML;
+		    //this.innerHTML = e.dataTransfer.getData('text/html');
+		    this.parentNode.removeChild(dragSrcEl);
+		    var dropHTML = e.dataTransfer.getData('text/html');
+		    this.insertAdjacentHTML('beforebegin',dropHTML);
+		    var dropElem = this.previousSibling;
+		    addDnDHandlers(dropElem);
+		    
+		  }
+		  this.classList.remove('over');
+		  return false;
+		}
+		
+		function handleDragEnd(e) {
+		  // this/e.target is the source node.
+		  this.classList.remove('over');
+		
+		  //[].forEach.call(cols, function (col) {
+		    //col.classList.remove('over');
+		  //});
+		}
+		
+		function addDnDHandlers(elem) {
+		  elem.addEventListener('dragstart', handleDragStart, false);
+		  elem.addEventListener('dragenter', handleDragEnter, false)
+		  elem.addEventListener('dragover', handleDragOver, false);
+		  elem.addEventListener('dragleave', handleDragLeave, false);
+		  elem.addEventListener('drop', handleDrop, false);
+		  elem.addEventListener('dragend', handleDragEnd, false);
+		
+		}
+		
+		var cols = document.querySelectorAll('#dropdownItems .dropdown-item');
+		[].forEach.call(cols, addDnDHandlers);
+		
+ 
+		
 		</script>
 			
 		<!-- <div class="container">
@@ -107,12 +197,13 @@
 			    
 			    <div class="btn-group-vertical" id="button_stuff">
 						<button id="btnGroupVerticalDrop2" type="button" class="btn btn-secondary dropdown-toggle btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-							<div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop2">
-			        			<a class="dropdown-item" href="#">Favorites</a>
-			        			<a class="dropdown-item" href="#">To Explore</a>
-			        			<a class="dropdown-item" href="#">Do Not Show</a>
-			        			<a class="dropdown-item" href="#">Grocery List</a>
+							<div id="dropdownItems" class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop2">
+			        			<a class="dropdown-item" draggable="true" href="#">Favorites</a>
+			        			<a class="dropdown-item" draggable="true" href="#">To Explore</a>
+			        			<a class="dropdown-item" draggable="true" href="#">Do Not Show</a>
+			        			<a class="dropdown-item" draggable="true" href="#">Grocery List</a>
 			      			</div>
+	
 			      			<script>
 			      				//This is a helper fuction that will help to make the dropdown menu look nicer
 			      				//Specifically, the name of the list will be displayed on the button after selected
@@ -124,8 +215,7 @@
 								      $("#btnGroupVerticalDrop2").val($(this).text());
 								      list_has_been_chosen = true;
 								      chosen_list = $(this).text();
-								   });
-								    
+								   });								    
 								});
 							</script>
 							
@@ -182,20 +272,21 @@
 				   <p><a class="btn btn-lg btn-success" href="#" role="button">Learn More</a></p>
 				   </div>
 				</div> -->
-				Testing
 				
-				<div class="pagination">
-				  <a href="#">&laquo;</a>
-				  <% 
-				  int num_results = Integer.parseInt((String)session.getAttribute("num_results"));
-				  int num_pages = num_results/10;
-				  if (num_results%10 > 0){
-					  num_pages ++;
-				  }
-				  for (int i = 1; i < num_pages + 1; i++){
-					  %> <a href="#" onclick="location.href = 'results_page.jsp?page_number=<%=i %>' "><%=i %></a>
-				  <%} %>
-				  <a href="#">&raquo;</a>
+				<div class="center">
+					<div class="pagination">
+					  <a href="#">&laquo;</a>
+					  <% 
+					  int num_results = Integer.parseInt((String)session.getAttribute("num_results"));
+					  int num_pages = num_results/5;
+					  if (num_results%5 > 0){
+						  num_pages ++;
+					  }
+					  for (int i = 1; i < num_pages + 1; i++){
+						  %> <a href="#" onclick="location.href = 'results_page.jsp?page_number=<%=i %>' "><%=i %></a>
+					  <%} %>
+					  <a href="#">&raquo;</a>
+					</div>
 				</div>
 				
 				<ul id="pagination-demo" class="pagination"></ul>
@@ -223,8 +314,8 @@
 									if (request.getParameter("page_number") != null){
 										page_number = Integer.parseInt(request.getParameter("page_number"));
 									};
-									int end_index = page_number * 10;
-									int start_index = end_index - 10;
+									int end_index = page_number * 5;
+									int start_index = end_index - 5;
 									
 									//TODO: error checking on the end_index;
 									

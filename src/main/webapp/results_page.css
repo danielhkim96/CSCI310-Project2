@@ -4,6 +4,49 @@ html body {
 	background-color: #f5f5f5;
 }
 
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /*Required to make elements draggable in old WebKit*/
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+#dropdownItems {
+  list-style-type: none;
+}
+
+.dropdown-item {
+  width: 162px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  text-align: center;
+  cursor: move;
+}
+.dropdown-item header {
+  height: 20px;
+  width: 150px;
+  color: black;
+  background-color: #ccc;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 10px;
+  border: 2px solid #666666;
+}
+
+.dropdown-item.dragElem {
+  opacity: 0.4;
+}
+.dropdown-item.over {
+  //border: 2px dashed #000;
+  border-top: 2px solid blue;
+}
+
+
+
+
 #collage {
 	 position: relative;
 	  margin: auto;
