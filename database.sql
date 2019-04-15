@@ -14,9 +14,7 @@ CREATE TABLE Restaurant (
 	restaurantPhone		VARCHAR(100)	NOT NULL,
 	restaurantURL		VARCHAR(100)	NOT NULL
 	restaurantRating 	VARCHAR(100)	NOT NULL
-	restaurantPhone		VARCHAR(100)	NOT NULL
 	restaurantDriveTime	VARCHAR(100)	NOT NULL
-	restaurantMapURL	VARCHAR(100)	NOT NULL
 );
 
 CREATE TABLE Recipe (
@@ -31,19 +29,15 @@ CREATE TABLE Recipe (
 CREATE TABLE ListRestaurants (
 	listName	VARCHAR(100) 	PRIMARY KEY
 	username		VARCHAR(100)	NOT NULL,
-	listID			INT(11)			NOT NULL,
 	restaurantID	INT(11)			NOT NULL,
 	FOREIGN KEY (username) REFERENCES User(username),
-	FOREIGN KEY (listName) REFERENCES List(listName),
 	FOREIGN KEY (restaurantName) REFERENCES Restaurant(restaurantName)
 );
 
 CREATE TABLE ListRecipes (
 	listName	VARCHAR(100) 	PRIMARY KEY
 	username	VARCHAR(100)	NOT NULL,
-	listID		INT(11)			NOT NULL,
 	recipeID	INT(11)			NOT NULL,
 	FOREIGN KEY (username) REFERENCES User(username),
-	FOREIGN KEY (listName) REFERENCES List(listName),
 	FOREIGN KEY (recipeName) REFERENCES Recipe(recipeName)
 );
