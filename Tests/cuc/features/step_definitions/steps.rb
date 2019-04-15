@@ -5,10 +5,6 @@ Given("I search for {string} results for {string}") do |string, string2|
   click_on("Feed Me!")
 end
 
-Then("I should see {int} results") do |int|
-  expect(page).to have_content("Distance", count:int)
-end
-
 Then("I should see {string}") do |string|
   expect(page).to have_content string
 end
