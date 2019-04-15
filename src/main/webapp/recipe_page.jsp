@@ -74,7 +74,7 @@
 				        	list_id = "GROCERY_LIST"; 
 				        }
 					 //send to servlet
-				        location.href = "IHManageList?action=ADD&list_id=" + list_id + "&recipe_id="+<%=request.getParameter("recipe_id")%>+"&restaurant_id=";	
+				        location.href = "IHManageList?action=ADD&list_id=" + list_id + "&recipe_id="+<%=request.getParameter("recipe_id")%>+"&restaurant_id=" + "&username=<%=request.getParameter("username") %>";	
 				    };
 	        	</script>
 	        </div> 

@@ -24,6 +24,9 @@
 	</head>
 	
 	<body>
+		<%
+			String username = (String) session.getAttribute("username");
+		%>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/ssbootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -80,6 +83,7 @@
 									document.getElementById("manage_list_button").onclick = function(){
 										if (list_has_been_chosen) {
 											var list_name = "";
+											var username = '<%= username %>';
 											if (chosen_list == "Favorites"){
 												list_name = "FAVORITES";
 											}
@@ -94,7 +98,7 @@
 											}
 												
 											//Redirect the user to the chosen list
-											location.href = "list_management_page.jsp?list_id=" + list_name;
+											location.href = "list_management_page.jsp?list_id=" + list_name + "&username=" + username;
 										}
 									}
 								</script>
@@ -158,7 +162,7 @@
 			      							list_name = list_name.substring(0,list_name.length()-1);
 			      							System.out.println("list name: " + list_name);
 			      						}
-			      						String redirect_link = "http://localhost:8080/ImHungry/IHManageList?list_id=" + list_name + "&action=DISPLAY&item_id=" + Integer.toString(i); 
+			      						String redirect_link = "http://localhost:8080/ImHungry/IHManageList?list_id=" + list_name + "&action=DISPLAY&item_id=" + Integer.toString(i) + "&username=" + username; 
 			      						%><tr><th><a href=<%= redirect_link%>><%=recipe_name %> </th> <th>Prep Time: <%=prepTime %></th> <th>Cook Time: <%=cookTime %></th></a>
 			      						
 			      						<!-- The following radio button will allow the user to choose one of the items 
@@ -178,7 +182,7 @@
 			      							list_name = list_name.substring(0,list_name.length()-1);
 			      							System.out.println("list name: " + list_name);
 			      						}
-			      						String redirect_link = "IHManageList?list_id=" + list_name + "&action=DISPLAY&item_id=" + Integer.toString(i); 
+			      						String redirect_link = "IHManageList?list_id=" + list_name + "&action=DISPLAY&item_id=" + Integer.toString(i) + "&username=" + username; 
 
 			      						%> <tr><th><a href=<%= redirect_link %>><%=restaurant_name %> </th> <th>Drive Time: <%=driveTime %> min </th> <th><%=address %> </th> <th><%
 											for (int j = 0; j < restaurant.getPriceRange(); j++ ){%>
@@ -220,7 +224,7 @@
 			      				    }
 			      				}
 			      				//send the REMOVE request to the backend servlet and let the backend deal with the remove logic and session storage.
-			      				var redirect_link = "IHManageList?list_id=" + list_name + "&action=REMOVE&item_id=" + item_index.toString();
+			      				var redirect_link = "IHManageList?list_id=" + list_name + "&action=REMOVE&item_id=" + item_index.toString() + "&username=" + username;
 			      				location.href = redirect_link;
 			      			}
 			      			
@@ -267,7 +271,7 @@
 			      				    }
 			      				}
 			      				//send the MOVE request to the backend servlet and let the backend deal with the move logic and session storage.
-			      				var redirect_link = "IHManageList?list_id=" + list_name + "&destination_id=" + destination_list_name + "&action=MOVE&item_id=" + item_index.toString();
+			      				var redirect_link = "IHManageList?list_id=" + list_name + "&destination_id=" + destination_list_name + "&action=MOVE&item_id=" + item_index.toString() + "&username=" + username;
 			      				location.href = redirect_link;
 			      			}
 			      		</script>

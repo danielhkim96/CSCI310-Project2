@@ -1,39 +1,73 @@
-@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
 html body {
 	background-color: #f5f5f5;
+    padding-top: 10%;
+    font-family: "Roboto", sans-serif;
 }
-.div_for_entire_content {
-	position: relative; 
-	top:150px;
-}
-.text-center {
+.title {
+	font-family: "Roboto", sans-serif;
+	font-size: 5vw;
 	text-align: center;
-	font-size: 60px;
+	padding-bottom: 1%;
 }
-.form-control-borderless {
-    border: none;
+form {
+	font-family: "Roboto", sans-serif;
+}
+.form-inline .form-control {
+	border-radius: 0;
+}
+.form-group.row label {
+	text-align: left;
+}
+.dropdown.dropdown-lg .dropdown-menu {
+    margin-top: -1px;
+    padding: 6px 20px;
+}
+.dropdown-menu.dropdown-menu-right {
+	border-radius: 0;
+	transform: translate3d(-370px, 38px, 0px);
+}
+.input-group-btn .btn-group {
+    display: flex !important;
+}
+.btn.btn-login {
+	border: 1px solid #1a73e8;
+	border-radius: 0;
+	color: #1a73e8;
+	position: absolute;
+	right: 1%;
+	top: 50%;
+}
+.btn.btn-login:hover {
+	background: #1a73e8;
+	color: #ffffff;
+}
+.btn-group .btn {
+    border-radius: 0;
+}
+.btn-search {
+	background: #1a73e8;
+	color: #ffffff;
+}
+.btn-search:hover {
+	background: #4285f4;
+}
+.btn.btn-default.dropdown-toggle {
+	border: 1px solid #ced4da;
+	margin: 0;
+	margin-left: -1px;
 }
 
-.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-.dropdown {
-	position:relative;
-}
-
-.form-actions {
-    margin: 0;
-    background-color: transparent;
-    text-align: center;
-}
-#ex2 {
-	width: 40px;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 500px;
+        margin: 0 auto;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 409px;
+    }
 }

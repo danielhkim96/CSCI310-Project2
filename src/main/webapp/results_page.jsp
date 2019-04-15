@@ -54,6 +54,9 @@
 	</head>
 	
 	<body>
+		<%
+			String username = (String) session.getAttribute("username");
+		%>
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/ssbootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -227,6 +230,7 @@
 									document.getElementById("manage_list_button").onclick = function(){
 										if (list_has_been_chosen) {
 											var list_name = "";
+											var username = '<%= username %>';
 											if (chosen_list == "Favorites"){
 												list_name = "FAVORITES";
 											}
@@ -241,7 +245,7 @@
 											}
 											
 											//Redirect the user to the chosen list
-											location.href = "list_management_page.jsp?list_id=" + list_name;
+											location.href = "list_management_page.jsp?list_id=" + list_name + "&username=" + username;
 										}
 									};
 								</script>
@@ -328,7 +332,7 @@
 										String restaurant_name = restaurant.getName();
 										int driveTime = restaurant.getDriveTime();
 										String address = restaurant.getAddress();
-										%> <tr><th><a href="restaurant_page.jsp?restaurant_id=<%= i%>"><%=restaurant_name%></a> </th> <th>Drive Time: <%=driveTime%> min </th> <th><%=address %> </th> <th><%
+										%> <tr><th><a href="restaurant_page.jsp?restaurant_id=<%= i%>&username=<%= username %>"><%=restaurant_name%></a> </th> <th>Drive Time: <%=driveTime%> min </th> <th><%=address %> </th> <th><%
 												for (int j = 0; j < restaurant.getPriceRange(); j++ ){%>
 													$
 												<% } %></th></tr> <%
@@ -373,7 +377,7 @@
 										prepTime = "No prep time available.";
 									}
 									else prepTime = recipe.getPrepTime() + " min";
-									%> <tr><th><a href="recipe_page.jsp?recipe_id=<%= i%>"><%=recipe_name%></a></th> <th>Prep Time: <%=prepTime %></th> <th>Cook Time: <%=cookTime %></th> </tr> <%
+									%> <tr><th><a href="recipe_page.jsp?recipe_id=<%= i%>&username=<%= username %>"><%=recipe_name%></a></th> <th>Prep Time: <%=prepTime %></th> <th>Cook Time: <%=cookTime %></th> </tr> <%
 								}
 								%>
 							</table>

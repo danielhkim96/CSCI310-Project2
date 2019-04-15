@@ -29,8 +29,8 @@ public class LoginServlet extends HttpServlet {
 		PreparedStatement ps = null;
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/project2?user=root&password=12345&userSSL=false");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/project2?user=root&password=12345&userSSL=false&serverTimezone=UTC");
 			
 			String username = request.getParameter("email");
 			String password = request.getParameter("password");
