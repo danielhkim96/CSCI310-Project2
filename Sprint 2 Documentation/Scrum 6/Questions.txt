@@ -1,0 +1,28 @@
+What have you accomplished since the last meeting?
+Samuel He: Communicated with frontend team on database integration. Completely finished database integration in backend.
+
+Daniel Kim: Made sure that username is accessible from every page that requires interaction with the backend.
+
+Yvette Lopez: Completed black box testing for pagination and ensured all tests pass. 
+
+Xubo Zhu: Helped with backend database integration. Helped with JUnit testing. 
+
+
+Are there any obstacles in the way of meeting your goal?
+Samuel He: None.
+	
+Daniel Kim: None.
+
+Yvette Lopez: None
+
+Xubo Zhu: Didn’t have time finishing up the reordering functionality. 
+
+
+What will you accomplish before the next meeting?
+Samuel He: Help finish documentation. Ensure JUnit tests are working as more commits are made.
+
+Daniel Kim: Make more changes to the frontend to make it more modern and attractive.
+
+Yvette Lopez: Double check that black box tests work for all features. 
+
+Xubo Zhu: Help finish documentation and JUnit tests. 
