@@ -1,1 +1,1 @@
-# CSCI310-Project2
+# CSCI310-Project2: Group P
