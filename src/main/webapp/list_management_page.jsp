@@ -224,8 +224,11 @@
 			      				    }
 			      				}
 			      				//send the REMOVE request to the backend servlet and let the backend deal with the remove logic and session storage.
-			      				var redirect_link = "IHManageList?list_id=" + list_name + "&action=REMOVE&item_id=" + item_index.toString() + "&username=" + username;
+			      				var redirect_link = "IHManageList?list_id=" + list_name + "&action=REMOVE&item_id=" + item_index.toString();
+/* 			      				var redirect_link = "IHManageList?list_id=" + list_name + "&action=REMOVE&item_id=" + item_index.toString() + "&username=" + username;
+ */
 			      				location.href = redirect_link;
+			      				
 			      			}
 			      			
 			      			//Helper function to get the value of the attribute in the url
@@ -271,7 +274,9 @@
 			      				    }
 			      				}
 			      				//send the MOVE request to the backend servlet and let the backend deal with the move logic and session storage.
-			      				var redirect_link = "IHManageList?list_id=" + list_name + "&destination_id=" + destination_list_name + "&action=MOVE&item_id=" + item_index.toString() + "&username=" + username;
+			      				var redirect_link = "IHManageList?list_id=" + list_name + "&destination_id=" + destination_list_name + "&action=MOVE&item_id=" + item_index.toString();
+/* 			      				var redirect_link = "IHManageList?list_id=" + list_name + "&destination_id=" + destination_list_name + "&action=MOVE&item_id=" + item_index.toString() + "&username=" + username;
+ */
 			      				location.href = redirect_link;
 			      			}
 			      		</script>
