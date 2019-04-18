@@ -1,0 +1,21 @@
+Specific Tasks we will undertake this Sprint:
+(FIRST PRIORITY) Testing: Ensure that JUnit Tests are correctly implemented and work for all requirements
+Requirement 1: Find more ways to make the website secure on top of protecting from injection attacks - implement https protocol.
+Requirement 2: Do more robust testing on the login functionality and ensure that it works correctly.
+Requirement 3: Implement the suggestions our stakeholder gave:
+If > 5 pages, then only have five numbers show on the page
+Instead of arrows, have button that says previous and next
+Current page of results is displayed in the middle except for on the very ends
+Ex: Have 10 pages of results and on page 6. We should see 4, 5, 6, 7, 8
+Requirement 5: Finish making all pages look modern and attractive
+Requirement 6: Implement the suggestions our stakeholder gave:
+On each page except for search page, have a link to get to the grocery list page (button)
+From each recipe page, want to be able to add ingredients to a grocery list
+Each individual item in grocery list should have a check box as a visual indicator that the item was purchased
+Add functionality to delete individual items
+Remove duplicate items. Merge items that are the same. 
+If conflicting measurements, then state both measurements and add a "+"
+Requirement 7: Implement requirement in its entirety
+Complete JUnit and cucumber testing
+Implement functionality through the front-end
+Requirement 8: Make sure this requirement is working correctly. Implement a way to add a default value to the radius search.
