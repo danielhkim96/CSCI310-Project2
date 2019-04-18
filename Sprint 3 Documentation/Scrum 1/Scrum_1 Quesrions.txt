@@ -1,0 +1,16 @@
+What have you accomplished since the last meeting?
+N/A
+
+
+Are there any obstacles in the way of meeting your goal?
+Before any new functionality can be implemented, we have to ensure that the JUnit tests are implemented correctly.
+
+
+What will you accomplish before the next meeting?
+Samuel He: Fix the JUnit tests that didn’t work during our last sprint cycle.
+
+Daniel Kim: Work on implementing the reordering list feature.
+
+Yvette Lopez: Work on JUnit test coverage and implementation for all requirements. Make sure that they work correctly.
+
+Xubo Zhu: Work on JUnit test to fix all the failing ones that we had. And create JUnit tests for all functionalities.
