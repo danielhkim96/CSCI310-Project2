@@ -1,0 +1,28 @@
+What have you accomplished since the last meeting?
+Samuel He: Fixed frontend bug related to user login functionality.
+
+Daniel Kim: Developed a plan on how to do the reordering list feature. Starting implementation.
+
+Yvette Lopez: Looked over current JUnit tests and researching how to develop new white-box testing
+
+Xubo Zhu: Found a problem of deletion and moving in the predefined lists. When passing the username parameter for the login functionality, then the deletion and moving does not work anymore. 
+
+
+Are there any obstacles in the way of meeting your goal?
+Samuel He: Not too familiar with front-end.
+
+Daniel Kim: Not too familiar with the front-end required to make this feature work.
+
+Yvette Lopez: None
+
+Xubo Zhu: Tried to fix the problem of deletion and moving when passing in the username. But has not yet found a way. 
+
+
+What will you accomplish before the next meeting?
+Samuel He: Implement user login tests and fix login problems in backend.
+
+Daniel Kim: Have major portions of this feature done and ready for testing.
+
+Yvette Lopez: Continue to develop JUnit tests for the changing functionality
+
+Xubo Zhu: Develop JUnit tests for login functionality as well as add the missing tests for other functionality. Fix the deletion and moving problem when passing the username in. 
