@@ -36,7 +36,7 @@ public class IHManageList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	// get database name later
-	private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/project2?user=root&password=root&useSSL=false";
+	private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/project2?user=root&password=root&useSSL=false&serverTimezone=UTC";
 	Connection conn = null;
 	Statement st = null;
 	ResultSet rs = null;
@@ -108,10 +108,10 @@ public class IHManageList extends HttpServlet {
 	@SuppressWarnings({ "unchecked", "static-access" })
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
+		System.out.println("in doget");
 		ArrayList<Recipe> recipes;
 		ArrayList<Restaurant> restaurants;
-		String userName = "test";
+		String userName;
 		try{
 			recipes = (ArrayList<Recipe>)(request.getSession().getAttribute("recipes"));
 			restaurants = (ArrayList<Restaurant>)(request.getSession().getAttribute("restaurants"));
@@ -122,32 +122,16 @@ public class IHManageList extends HttpServlet {
 			response.getWriter().flush();
 			return;
 		}
-		/*
-		 * restaurantID		INT(11)			PRIMARY KEY,
-	restaurantName		VARCHAR(100)	NOT NULL,
-	restaurantAddress	VARCHAR(100)	NOT NULL,
-	restaurantPhone		VARCHAR(100)	NOT NULL,
-	restaurantURL		VARCHAR(100)	NOT NULL
-		 */
-		
-		/*
-		 * recipeID			INT(11)			PRIMARY KEY,
-	recipeName			VARCHAR(100)	NOT NULL,
-	recipeImageURL		VARCHAR(100) 	NOT NULL,
-	recipeCookTime		VAR CHAR(50) 	NOT NULL,
-	recipePrepTime		VARCHAR(50)		NOT NULL,
-	recipeInstructions	VARCHAR(1000)	NOT NULL
-		 */
 		
 		
-		String listID = request.getParameter("list_id");
 		String action = request.getParameter("action");
+		String listID = request.getParameter("list_id");
 		
 		//based on request parameter, will add the recipe or restaurant to the list
 		if (action.equals("ADD")) {
 			String recipeID = request.getParameter("recipe_id");
 			String restaurantID = request.getParameter("restaurant_id");
-			addToList(listID,recipeID,restaurantID,recipes,restaurants, userName);
+			addToList(listID, recipeID,restaurantID,recipes,restaurants, userName);
 			if (recipeID != "") {
 				request.getRequestDispatcher("recipe_page.jsp?recipe_id=" + recipeID).forward(request, response);
 			} else {
@@ -156,18 +140,41 @@ public class IHManageList extends HttpServlet {
 		}
 		
 		if (action.equals("REMOVE")) {
-			String recipeID = request.getParameter("recipe_id");
-			String restaurantID = request.getParameter("restaurant_id");
-			//String itemID = request.getParameter("item_id");
+
+			
+			String flag = "";
+			String itemIndex = request.getParameter("item_id");
+			int currIndex = Integer.parseInt(itemIndex);
+			Result r = null;
+			if(listID.equals("FAVORITES")) {
+				r = ListManager.getInstance().getFavorites().get(currIndex);
+			}
+			else if(listID.equals("TO_EXPLORE")) {
+				r = ListManager.getInstance().getToExplore().get(currIndex);
+			}
+			else if(listID.equals("DO_NOT_SHOW")) {
+				r = ListManager.getInstance().getDoNotShow().get(currIndex);
+			}
+			
+			if(r instanceof Restaurant) {
+				flag = "rest";
+			}
+			else {
+				flag = "rec";
+			}
+			
+			//System.out.println(recipeID);
 			//String indicator = request.getParameter(")
-			removeFromList(listID, userName, recipeID, restaurantID);
+			removeFromList(listID, itemIndex, userName, flag);
 			request.getRequestDispatcher("list_management_page.jsp?list_id=" + listID).forward(request, response);
 		}
 		
 		else if (action.equals("MOVE")) {
-			String itemID = request.getParameter("item_id");
+			//userName = (String)(request.getSession().getAttribute("username"));//repeating from doGet()
+			
+			String itemIndex = request.getParameter("item_id");
 			String destinationID = request.getParameter("destination_id");
-			moveToList(listID,destinationID,itemID);
+			moveToList(listID,destinationID,itemIndex, userName);
 			request.getRequestDispatcher("list_management_page.jsp?list_id=" + listID).forward(request, response);
 		}
 		
@@ -210,75 +217,223 @@ public class IHManageList extends HttpServlet {
 	/*
 	 * Based on the provided source and destination lists, this function moves the specified item.
 	 */
-	public void moveToList(String listID, String destinationID, String itemID) {
-		if (itemID != null && !itemID.equals("")) {
-			int index = Integer.parseInt(itemID);
-			if (listID.equals("FAVORITES") && !destinationID.equals("FAVORITES")) {
-				Result r = ListManager.getInstance().getFavorites().get(index);
-				ListManager.getInstance().removeFromFavorites(r);
-				if (destinationID.equals("TO_EXPLORE")) {
-					ListManager.getInstance().addToToExplore(r);
-				}
-				if (destinationID.equals("DO_NOT_SHOW")) {
-					ListManager.getInstance().addToDoNotShow(r);
-				}
-			}
-			if (listID.equals("TO_EXPLORE") && !destinationID.equals("TO_EXPLORE")) {
-				Result r = ListManager.getInstance().getToExplore().get(index);
-				ListManager.getInstance().removeFromToExplore(r);
-				if (destinationID.equals("FAVORITES")) {
-					ListManager.getInstance().addToFavorites(r);
-				}
-				if (destinationID.equals("DO_NOT_SHOW")) {
-					ListManager.getInstance().addToDoNotShow(r);
-				}
-			}
-			if (listID.equals("DO_NOT_SHOW") && !destinationID.equals("DO_NOT_SHOW")) {
-				Result r = ListManager.getInstance().getDoNotShow().get(index);
-				ListManager.getInstance().removeFromDoNotShow(r);
-				if (destinationID.equals("FAVORITES")) {
-					ListManager.getInstance().addToFavorites(r);
-				}
-				if (destinationID.equals("TO_EXPLORE")) {
-					ListManager.getInstance().addToToExplore(r);
-				}
-			}
-		}
-	}
+	public boolean moveToList(String listID, String destinationID, String listIndex, String userName) {
+		boolean ret = false;
+		if (listIndex != null && !listIndex.equals("")) {
+		
+			int index = Integer.parseInt(listIndex);
+			Result r = null;
+			Recipe tempRecipe = null;
+			Restaurant tempRestaurant = null;
+			int currIndex = 0;
 
+			if(listID.equals("FAVORITES")) {
+				r = ListManager.getInstance().getFavorites().get(index);
+				if(r instanceof Recipe) {
+					tempRecipe = (Recipe)ListManager.getInstance().getFavorites().get(index);
+				}
+				else {
+					 tempRestaurant = (Restaurant)ListManager.getInstance().getFavorites().get(index);
+				}
+				ListManager.getInstance().removeFromFavorites(r);
+				
+			}
+			else if(listID.equals("TO_EXPLORE")) {
+				r = ListManager.getInstance().getToExplore().get(index);
+				if(r instanceof Recipe) {
+					tempRecipe = (Recipe)ListManager.getInstance().getToExplore().get(index);
+				}
+				else {
+					 tempRestaurant = (Restaurant)ListManager.getInstance().getToExplore().get(index);
+				}
+				ListManager.getInstance().removeFromToExplore(r);
+			}
+			else if(listID.equals("DO_NOT_SHOW")) {
+				r = ListManager.getInstance().getDoNotShow().get(index);
+				if(r instanceof Recipe) {
+					tempRecipe = (Recipe)ListManager.getInstance().getDoNotShow().get(index);
+				}
+				else {
+					 tempRestaurant = (Restaurant)ListManager.getInstance().getDoNotShow().get(index);
+				}
+				
+				ListManager.getInstance().removeFromDoNotShow(r);
+			}
+			
+			if(destinationID.equals("FAVORITES")) {
+				currIndex  = ListManager.getInstance().getFavorites().size();
+			}
+			else if(destinationID.equals("TO_EXPLORE")) {
+				currIndex  = ListManager.getInstance().getToExplore().size();
+			}
+			else if(destinationID.equals("DO_NOT_SHOW")){
+				currIndex  = ListManager.getInstance().getDoNotShow().size();
+			}
+			 
+			if(r instanceof Recipe) {
+				try {
+					ps = conn.prepareStatement(
+							"DELETE FROM ListRecipes WHERE username=" + userName + " AND " + "listIndex=" + listIndex
+							+ " AND " + "listName=" + listID);
+					ret = ps.execute();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// delimit instructions and ingredients by |
+				String instructions = "";
+				for(int i = 0; i < tempRecipe.getInstructions().size(); ++i) {
+					instructions += tempRecipe.getInstructions().get(i);
+					if(i != tempRecipe.getInstructions().size()-1) {
+						instructions += "|";
+					}
+				}
+				
+				String ingredients = "";
+				for(int i = 0; i < tempRecipe.getIngredients().size(); ++i) {
+					ingredients += tempRecipe.getIngredients().get(i);
+					if(i != tempRecipe.getIngredients().size()-1) {
+						ingredients += "|";
+					}
+				}
+				try {
+		    		Class.forName("com.mysql.jdbc.Driver");
+					conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
+					ps = conn.prepareStatement(
+							"INSERT INTO ListRecipes ("
+							+ "listName, "
+							+ "username, "
+							+ "recipeName,"
+							+ "listIndex, "
+							+ "recipeImageURL, "
+							+ "recipeCookTime, "
+							+ "recipePrepTime, "
+							+ "recipeInstructions, "
+							+ "recipeIngredients"
+							+ ") VALUES ('" 
+							+ destinationID + "', '"
+							+ userName + "', '"
+							+ tempRecipe.getName() + "', '"
+							+ Integer.toString(currIndex) + "', '"
+							+ tempRecipe.getImgURL() + "', '"
+							+ tempRecipe.getCookTime() + "', '"
+							+ tempRecipe.getPrepTime() + "', '"
+							+ instructions + "', '"
+							+ ingredients
+							+ "');");
+					ret = ps.execute();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else {
+				try {
+					ps = conn.prepareStatement(
+							"DELETE FROM ListRestaurants WHERE username=" + userName + " AND " +  "listIndex=" + listIndex
+							+ " AND " + "listName=" + listID);
+					ret = ps.execute();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+		    		Class.forName("com.mysql.jdbc.Driver");
+					conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
+					ps = conn.prepareStatement(
+							"INSERT INTO ListRestaurants ("
+							+ "listName, "
+							+ "username, "
+							+ "listIndex, "
+							+ "restaurantName, "
+							+ "restaurantAddress, "
+							+ "restaurantPhone, "
+							+ "restaurantURL, "
+							+ "restaurantRating, "
+							+ "restaurantDriveTime"
+							+ ") VALUES ('" 
+							+ destinationID + "', '"
+							+ userName + "', '"
+							+ Integer.toString(currIndex) + "', '"
+							+ tempRestaurant.getName() + "', '"
+							+ tempRestaurant.getAddress() + "', '"
+							+ tempRestaurant.getPhoneNum() + "', '"
+							+ tempRestaurant.getWebsiteURL() + "', '"
+							+ Double.toString(tempRestaurant.getRating()) + "', '"
+							+ Integer.toString(tempRestaurant.getDriveTime())
+							+ "');");
+					ret = ps.execute();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			if (destinationID.equals("FAVORITES")) {
+				ListManager.getInstance().addToFavorites(r);
+			}
+			if (destinationID.equals("TO_EXPLORE")) {
+				ListManager.getInstance().addToToExplore(r);
+			}
+			if (destinationID.equals("DO_NOT_SHOW")) {
+				ListManager.getInstance().addToDoNotShow(r);
+			}
+			
+			
+		}
+		return ret;
+	}
+	
 	/*
 	 * Based on the specified list and item number, it removes it from the list.
 	 */ 
-	public boolean removeFromList(String listID, String userName, String recipeID, String restaurantID) {
+	public boolean removeFromList(String listID, String listIndex, String userName, String flag) {
 		boolean ret = false;
-		//if (itemID != null && !itemID.equals("")) {
+		int index = 0;
+		System.out.println("before sql delete");
+		if (listIndex != null && !listIndex.equals("")) {
+			
+			index = Integer.parseInt(listIndex);
 			// how to identify if from listRestaurants or ListRecipes
-		if (recipeID != null && !recipeID.equals("")) {
-			try {
-				ps = conn.prepareStatement(
-						"DELETE FROM ListRecipes WHERE username=" + userName + " AND " + "recipeID=" + recipeID
-						+ " AND " + "listName=" + listID);
-				ret = ps.execute();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (flag.equals("rec")){
+				try {
+					System.out.println("listIndex: " + listIndex);
+					System.out.println("listName: " + listID);
+					System.out.println(userName);
+					ps = conn.prepareStatement(
+							"DELETE FROM ListRecipes WHERE username = '" + userName + "' AND " + "listIndex = '" + listIndex
+							+ "' AND " + "listName = '" + listID + "';");
+					ret = ps.execute();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
-			
-		}
-		else {
-			try {
-				ps = conn.prepareStatement(
-						"DELETE FROM ListRecipes WHERE username=" + userName + " AND " + "recipeID=" + recipeID
-						+ " AND " + "listName=" + listID);
-				ret = ps.execute();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			else if (flag.equals("rest"))  {
+				try {
+					ps = conn.prepareStatement(
+							"DELETE FROM ListRestaurants WHERE username=" + userName + " AND " +  "listIndex=" + listIndex
+							+ " AND " + "listName=" + listID);
+					ret = ps.execute();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			System.out.println("after sql delete");
 		}
+		System.out.println(ret);
+		//if(ret) {
 			
-			/*
 			if (listID.equals("FAVORITES")) {
+				System.out.print(index);
 				ListManager.getInstance().removeFromFavorites(index);
 			}
 			if (listID.equals("TO_EXPLORE")) {
@@ -287,9 +442,10 @@ public class IHManageList extends HttpServlet {
 			if (listID.equals("DO_NOT_SHOW")) {
 				ListManager.getInstance().removeFromDoNotShow(index);
 			}
+			// change this later
 			if (listID.equals("GROCERY_LIST")) {
 				ListManager.getInstance().removeFromGroceryList(index);
-			}*/
+			}
 		//}
 		return ret;
 	}
@@ -300,8 +456,39 @@ public class IHManageList extends HttpServlet {
 	 */
 	public boolean addToList(String listID, String recipeID, String restaurantID, ArrayList<Recipe> recipes, ArrayList<Restaurant> restaurants, String userName) {
 		boolean ret = false;
+		int currListIndex = 0;
+		if (listID.equals("FAVORITES")) {
+			currListIndex = ListManager.getInstance().getFavorites().size();
+		}
+		if (listID.equals("TO_EXPLORE")) {
+			currListIndex = ListManager.getInstance().getToExplore().size();
+		}
+		if (listID.equals("DO_NOT_SHOW")) {
+			currListIndex = ListManager.getInstance().getDoNotShow().size();
+		}
+		// add grocery implementation later
+		
 		if (recipeID != null && !recipeID.equals("")) {
+			int index = Integer.parseInt(recipeID);
 			
+			// delimit instructions and ingredients by |
+			// cant add instructions with "'"
+			// clicked back to results, null items
+			String instructions = "";
+			for(int i = 0; i < recipes.get(index).getInstructions().size(); ++i) {
+				instructions += recipes.get(index).getInstructions().get(i);
+				if(i != recipes.get(index).getInstructions().size()-1) {
+					instructions += "|";
+				}
+			}
+			
+			String ingredients = "";
+			for(int i = 0; i < recipes.get(index).getIngredients().size(); ++i) {
+				ingredients += recipes.get(index).getIngredients().get(i);
+				if(i != recipes.get(index).getIngredients().size()-1) {
+					ingredients += "|";
+				}
+			}
 			try {
 	    		Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
@@ -319,13 +506,13 @@ public class IHManageList extends HttpServlet {
 						+ ") VALUES ('" 
 						+ listID + "', '"
 						+ userName + "', '"
-						+ recipeID + "', '"
-						+ "test" + "', '"
-						+ "test" + "', '"
-						+ "test" + "', '"
-						+ "test" + "', '"
-						+ "test" + "', '"
-						+ "test"
+						+ recipes.get(index).getName() + "', '"
+						+ Integer.toString(currListIndex) + "', '"
+						+ recipes.get(index).getImgURL() + "', '"
+						+ recipes.get(index).getCookTime() + "', '"
+						+ recipes.get(index).getPrepTime() + "', '"
+						+ instructions + "', '"
+						+ ingredients
 						+ "');");
 				ret = ps.execute();
 			} catch (SQLException e) {
@@ -335,7 +522,7 @@ public class IHManageList extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			/*
+			
 			if (listID.equals("FAVORITES")) {
 				ListManager.getInstance().addToFavorites(recipes.get(index));
 			}
@@ -349,8 +536,10 @@ public class IHManageList extends HttpServlet {
 				for(int i = 0; i < recipes.get(index).getIngredients().size(); ++i) {
 					ListManager.getInstance().addToGroceryList(recipes.get(index).getIngredients().get(i));
 				}
-			}*/
+			}
 		} if (restaurantID != null && !restaurantID.equals("")) {
+			int index = Integer.parseInt(restaurantID);
+			
 			try {
 	    		Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
@@ -358,11 +547,23 @@ public class IHManageList extends HttpServlet {
 						"INSERT INTO ListRestaurants ("
 						+ "listName, "
 						+ "username, "
-						+ "restaurantID"
+						+ "listIndex, "
+						+ "restaurantName, "
+						+ "restaurantAddress, "
+						+ "restaurantPhone, "
+						+ "restaurantURL, "
+						+ "restaurantRating, "
+						+ "restaurantDriveTime"
 						+ ") VALUES ('" 
 						+ listID + "', '"
 						+ userName + "', '"
-						+ restaurantID
+						+ Integer.toString(currListIndex) + "', '"
+						+ restaurants.get(index).getName() + "', '"
+						+ restaurants.get(index).getAddress() + "', '"
+						+ restaurants.get(index).getPhoneNum() + "', '"
+						+ restaurants.get(index).getWebsiteURL() + "', '"
+						+ Double.toString(restaurants.get(index).getRating()) + "', '"
+						+ Integer.toString(restaurants.get(index).getDriveTime())
 						+ "');");
 				ret = ps.execute();
 			} catch (SQLException e) {
@@ -372,7 +573,7 @@ public class IHManageList extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			/*
+			
 			if (listID.equals("FAVORITES")) {
 				ListManager.getInstance().addToFavorites(restaurants.get(index));
 			}
@@ -381,7 +582,7 @@ public class IHManageList extends HttpServlet {
 			}
 			if (listID.equals("DO_NOT_SHOW")) {
 				ListManager.getInstance().addToDoNotShow(restaurants.get(index));
-			}*/
+			}
 		}
 		return ret;
 	}

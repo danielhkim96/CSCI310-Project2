@@ -25,7 +25,7 @@
 	
 	<body>
 		<%
-			String username = (String) session.getAttribute("username");
+			String username = (String)session.getAttribute("username");
 		%>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/ssbootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -217,16 +217,26 @@
 			      				var list_name = getUrlVars()["list_id"];
 			      				var radios = document.getElementsByTagName('input');
 			      				var item_index;
+			      				var username = '<%= username %>';
 			      				for (var i = 0; i < radios.length; i++) {
 			      				    if (radios[i].type === 'radio' && radios[i].checked) {
 			      				        // get the item_index from the radio button input
 			      				        item_index = radios[i].value;       
 			      				    }
 			      				}
+			      				/*
+			      				var flag = "";
+			      				if(list.get(item_index) instanceof Restaurant){
+			      					flag = "restaurant";
+			      				}
+			      				else if (list.get(item_index) instanceof Recipe){
+			      					flag = "recipe";
+			      				}*/
 			      				//send the REMOVE request to the backend servlet and let the backend deal with the remove logic and session storage.
-			      				var redirect_link = "IHManageList?list_id=" + list_name + "&action=REMOVE&item_id=" + item_index.toString();
-/* 			      				var redirect_link = "IHManageList?list_id=" + list_name + "&action=REMOVE&item_id=" + item_index.toString() + "&username=" + username;
- */
+			      				/*var redirect_link = "IHManageList?list_id=" + list_name + "&action=REMOVE&item_id=" + item_index.toString();
+ 			      				*/
+			      				var redirect_link = "IHManageList?list_id=" + list_name + "&username=" + username + "&action=REMOVE&item_id=" + item_index.toString() ;
+ 
 			      				location.href = redirect_link;
 			      				
 			      			}
@@ -264,7 +274,7 @@
 								else if (chosen_list == "Do Not Show"){
 									destination_list_name = "DO_NOT_SHOW";
 								}
-			      				
+			      				var username = '<%= username %>';
 								var radios = document.getElementsByTagName('input');
 			      				var item_index;
 			      				for (var i = 0; i < radios.length; i++){
@@ -274,9 +284,10 @@
 			      				    }
 			      				}
 			      				//send the MOVE request to the backend servlet and let the backend deal with the move logic and session storage.
-			      				var redirect_link = "IHManageList?list_id=" + list_name + "&destination_id=" + destination_list_name + "&action=MOVE&item_id=" + item_index.toString();
-/* 			      				var redirect_link = "IHManageList?list_id=" + list_name + "&destination_id=" + destination_list_name + "&action=MOVE&item_id=" + item_index.toString() + "&username=" + username;
- */
+			      				/*var redirect_link = "IHManageList?list_id=" + list_name + "&destination_id=" + destination_list_name + "&action=MOVE&item_id=" + item_index.toString();
+ 			      				*/
+			      				var redirect_link = "IHManageList?list_id=" + list_name + "&destination_id=" + destination_list_name + "&action=MOVE&item_id=" + item_index.toString() + "&username=" + username;
+
 			      				location.href = redirect_link;
 			      			}
 			      		</script>
