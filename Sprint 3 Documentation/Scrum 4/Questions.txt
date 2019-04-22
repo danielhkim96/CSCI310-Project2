@@ -1,0 +1,30 @@
+What have you accomplished since the last meeting?
+Samuel He: Work on algorithmic implementation of grocery list merging and preventing duplicates.
+
+Daniel Kim: Researching methods on the most efficient ways to implement the drag and drop for reordering lists.
+
+Yvette Lopez: Started with JUnit tests - helped further refine the cucumber tests and research how to implement requirement 7
+
+Xubo Zhu: Small fix in database connection error. Decided on the grocery list redesign. 
+
+
+
+Are there any obstacles in the way of meeting your goal?
+Samuel He: None
+
+Daniel Kim: None
+
+Yvette Lopez: None
+
+Xubo Zhu: Could not think of a way to implement grocery list backend that is both fast and doable without changing too much previous code in such a time constraint. 
+
+
+
+What will you accomplish before the next meeting?
+Samuel He: Finish implementing grocery list backend based on what we learned about the functionality in Spring Demo 2. 
+
+Daniel Kim: Implement the reordering list functionality and work on making the website look modern and attractive.
+
+Yvette Lopez: Finish implementing JUnit tests for requirements 8, 6, 1, and 2
+
+Xubo Zhu: Worked on JUnit tests with Yvette for requirement  8, 6, 1, and 2.
