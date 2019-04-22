@@ -1,0 +1,30 @@
+What have you accomplished since the last meeting?
+Samuel He: Worked with Hiro to diagnose and fix the errors with logging into the database.
+
+Daniel Kim: Still working on frontend.
+
+Yvette Lopez: Due to multiple different errors being discovered throughout the JUnit testing, put that development on hold and focused on refining current black-box tests. Also did some more research on how to develop JUnit tests.
+
+Xubo Zhu: Fixed the deletion and moving problem when passing the username in. Fixed database connection errors. Changed the database design and make the database work.
+
+
+
+Are there any obstacles in the way of meeting your goal?
+Samuel He: Having lots of trouble in debugging the database connection error. 
+
+Daniel Kim: None
+
+Yvette Lopez: None
+
+Xubo Zhu: Having lots of trouble in debugging the database connection error. Might need to re-design the arraylist of pre-defined lists to make the deleting in the grocery lists to work.
+
+
+
+What will you accomplish before the next meeting?
+Samuel He: Continue working on the database with Hiro to implement the Login Functionality
+
+Daniel Kim: Implement the drag and drop for reordering lists.
+
+Yvette Lopez: Write the JUnit tests for code that does not have JUnit tests
+
+Xubo Zhu: Continue working on the database and pagination. 
