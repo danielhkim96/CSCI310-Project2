@@ -21,7 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	
+	
+	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
+	static String DB_USERNAME = "root";
+	static String DB_PASSWORD = "12345678Abc";
     
+	
     @Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	Connection conn = null;
@@ -30,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/project2?user=root&password=root&userSSL=false&serverTimezone=UTC");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/project2?user=" + DB_USERNAME + "&password=" + DB_PASSWORD + "&userSSL=false&serverTimezone=UTC");
 			
 			String username = request.getParameter("email");
 			String password = request.getParameter("password");

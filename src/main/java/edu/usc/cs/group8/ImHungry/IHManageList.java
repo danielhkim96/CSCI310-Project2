@@ -28,6 +28,9 @@ import java.util.ArrayList;
 @WebServlet("/IHManageList")
 public class IHManageList extends HttpServlet {
 
+	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
+	static String DB_USERNAME = "root";
+	static String DB_PASSWORD = "12345678Abc";
 
 	/**
 	 * search_query for text
@@ -36,7 +39,7 @@ public class IHManageList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	// get database name later
-	private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/project2?user=root&password=root&useSSL=false&serverTimezone=UTC";
+	private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/project2?user=" + DB_USERNAME + "&password=" + DB_PASSWORD + "&useSSL=false&serverTimezone=UTC";
 	Connection conn = null;
 	Statement st = null;
 	ResultSet rs = null;
