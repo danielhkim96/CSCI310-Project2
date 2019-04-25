@@ -32,13 +32,30 @@ CREATE TABLE ListRecipes (
 	recipeImageURL		VARCHAR(300) 	NOT NULL,
 	recipeCookTime		VARCHAR(50) 	NOT NULL,
 	recipePrepTime		VARCHAR(50)		NOT NULL,
-	recipeInstructions	VARCHAR(5000)	NOT NULL,
-	recipeIngredients	VARCHAR(5000)	NOT NULL,
 	FOREIGN KEY (username) REFERENCES User(username)
 );
 
 CREATE TABLE Grocery (
 	ingredientName	VARCHAR(100) 	PRIMARY KEY,
 	username	VARCHAR(100)	NOT NULL,
+	listIndex	VARCHAR(100)	NOT NULL,
 	FOREIGN KEY (username) REFERENCES User(username)
+);
+
+CREATE TABLE Instructions (
+	instruction	VARCHAR(1000) 	PRIMARY KEY,
+	username	VARCHAR(100)	NOT NULL,
+	recipeName		VARCHAR(100)	NOT NULL,
+	listIndex	VARCHAR(100)	NOT NULL,
+	FOREIGN KEY (username) REFERENCES User(username),
+	FOREIGN KEY (recipeName) REFERENCES User(recipeName)
+);
+
+CREATE TABLE Ingredients (
+	ingredient	VARCHAR(1000) 	PRIMARY KEY,
+	username	VARCHAR(100)	NOT NULL,
+	recipeName		VARCHAR(100)	NOT NULL,
+	listIndex	VARCHAR(100)	NOT NULL,
+	FOREIGN KEY (username) REFERENCES User(username),
+	FOREIGN KEY (recipeName) REFERENCES User(recipeName)
 );
