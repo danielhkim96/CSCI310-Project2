@@ -83,6 +83,7 @@ public class IHSearchTest {
  
         IHS.doGet(request, response);
         String result = sw.getBuffer().toString().trim();
+        System.out.println("Hiro: the result is: " + result);
         //assertEquals(result, new String("Full Name: Vinod Kashyap"));
     }
 	
