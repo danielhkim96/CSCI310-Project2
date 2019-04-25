@@ -60,3 +60,5 @@ CREATE TABLE Ingredients (
 	listIndex	VARCHAR(100)	NOT NULL,
 	FOREIGN KEY (username) REFERENCES User(username)
 );
+
+INSERT INTO User(username, password) values ("test@usc.edu", "test");
