@@ -12,16 +12,17 @@ class IHSearchTest_Yvette {
 	public void getRestaurantReturnsCorrectRestaurantsWithRadius() {
 		IHSearch tester = new IHSearch();
 		ArrayList<Restaurant> testRestaurants = new ArrayList<Restaurant>();
-		
-		testRestaurants = tester.doRestaurantSearch("Chicken", "5", "1");
+	
+		testRestaurants = tester.doRestaurantSearch("Chicken", "5", ".2");
 		
 		System.out.println("Restaurant size: " + testRestaurants.size());
 		for(int i = 0; i < testRestaurants.size(); i++) {
 			System.out.println(testRestaurants.get(i).getAddress());
 		}	
+		int x = 2;
 		assertEquals("RestaurantURL0", testRestaurants.get(0).getAddress(), "The first result should be ____");
 		assertEquals("RestaurantURL1", testRestaurants.get(1).getAddress(), "The second result should be ____");
-		assertEquals(2, testRestaurants.size(), "We should only display X restaurants");
+		assertEquals(x, testRestaurants.size(), "We should only display X restaurants");
 		
 		testRestaurants = tester.doRestaurantSearch("Taco", "3", "100");
 		
@@ -38,13 +39,13 @@ class IHSearchTest_Yvette {
 	@Test
 	public void testHaversineFunction() {
 		double HaversineTest = IHSearch.haversine(1000, 2000, 3000, 4000);
-		assertEquals(2000, HaversineTest, "Checking Haversine works with all positive latitude and longitude");
+		assertEquals(15619, HaversineTest, 100, "Checking Haversine works with all positive latitude and longitude");
 		
 		HaversineTest = IHSearch.haversine(-100, -200, -300, -400);
-		assertEquals(2000, HaversineTest, "Checking Haversine works with all negative latitude and longitude");
-		
+		assertEquals(15619, HaversineTest, 100, "Checking Haversine works with all negative latitude and longitude");
+
 		HaversineTest = IHSearch.haversine(-100, 200, 300, -400);
-		assertEquals(2000, HaversineTest, "Checking Haversine works with mixed positive and negative latitude and longitude");		
+		assertEquals(15619, HaversineTest, 100, "Checking Haversine works with mixed positive and negative latitude and longitude");
 	}
 	
 }
