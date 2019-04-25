@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 	
 	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
 	static String DB_USERNAME = "root";
-	static String DB_PASSWORD = "12345";
+	static String DB_PASSWORD = "12345678Abc";
     
 	
     @Override

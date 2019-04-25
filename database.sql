@@ -43,19 +43,20 @@ CREATE TABLE Grocery (
 );
 
 CREATE TABLE Instructions (
-	instruction	VARCHAR(1000) 	PRIMARY KEY,
+	instructionID		int 			PRIMARY KEY AUTO_INCREMENT,
+	instruction	VARCHAR(750) 	NOT NULL,
 	username	VARCHAR(100)	NOT NULL,
 	recipeName		VARCHAR(100)	NOT NULL,
 	listIndex	VARCHAR(100)	NOT NULL,
-	FOREIGN KEY (username) REFERENCES User(username),
-	FOREIGN KEY (recipeName) REFERENCES User(recipeName)
+	FOREIGN KEY (username) REFERENCES User(username)
+
 );
 
 CREATE TABLE Ingredients (
-	ingredient	VARCHAR(1000) 	PRIMARY KEY,
+	ingredientID		int 			PRIMARY KEY AUTO_INCREMENT,
+	ingredient	VARCHAR(750) 	NOT NULL,
 	username	VARCHAR(100)	NOT NULL,
 	recipeName		VARCHAR(100)	NOT NULL,
 	listIndex	VARCHAR(100)	NOT NULL,
-	FOREIGN KEY (username) REFERENCES User(username),
-	FOREIGN KEY (recipeName) REFERENCES User(recipeName)
+	FOREIGN KEY (username) REFERENCES User(username)
 );
