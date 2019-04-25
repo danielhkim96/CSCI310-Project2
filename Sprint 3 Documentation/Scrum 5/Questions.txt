@@ -1,0 +1,28 @@
+What have you accomplished since the last meeting?
+Samuel He: Fully implemented database in backend and data persistence requirement during pair programming session with Hiro.
+
+Daniel Kim: Reordering list functionality is nearly done.
+
+Yvette Lopez: Most JUnit tests are implemented and working. Still need to fix and update some for various requirements.
+
+Xubo Zhu: Pair programmed with Sam to implement the data storage in the database from the original data storage locally in one session. 
+
+
+Are there any obstacles in the way of meeting your goal?
+Samuel He: Database connection and web app developing overall is very hard to debug, a lot of back and forth and checking what’s wrong in eclipse, browser, and MySQL workbench. Many times it is hard to tell where exactly the fault is happening. 
+
+Daniel Kim: None
+
+Yvette Lopez: None
+
+Xubo Zhu: Database connection and web app developing overall is very hard to debug, a lot of back and forth and checking what’s wrong in eclipse, browser, and MySQL workbench. Many times it is hard to tell where exactly the fault is happening. 
+
+
+What will you accomplish before the next meeting?
+Samuel He: Work on JUnit tests for managing list requirement, specifically IHManageList.java.
+
+Daniel Kim: Finish the reordering list functionality and make sure that the user interface is modern and attractive.
+
+Yvette Lopez: Completely finish all JUnit tests and ensure that all functionality is working correctly.
+
+Xubo Zhu: Work on JUnit tests with Yvette for everything other than IHManage.java. Work with Sam on the requirement for merging the grocery list. Might need another data structure to keep track of the repeats in the grocery list.

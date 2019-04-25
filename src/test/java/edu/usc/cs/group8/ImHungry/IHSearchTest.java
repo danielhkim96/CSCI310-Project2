@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
@@ -52,8 +53,6 @@ public class IHSearchTest {
         Mockito.when(IHS.doRestaurantSearch("spaghetti","10", "10")).thenReturn(new ArrayList<Restaurant>());
         Mockito.when(IHS.doImageSearch("spaghetti")).thenReturn(new ArrayList<String>());
         Mockito.when(IHS.doRestaurantSearch("spaghetti","10")).thenReturn(new ArrayList<Restaurant>());
-        
-        
         Mockito.when(IHS.doRecipeSearch("spaghetti","10")).thenReturn(new ArrayList<Recipe>());
          
         when(response.getWriter()).thenReturn(pw);
@@ -62,7 +61,7 @@ public class IHSearchTest {
 
         IHS.doGet(request, response);
         String result = sw.getBuffer().toString().trim();
-        //assertEquals(result, new String("Full Name: Vinod Kashyap"));
+        assertTrue(result.equals(new String("Full Name: Vinod Kashyap")));
     }
 	
 	@Test
@@ -130,7 +129,7 @@ public class IHSearchTest {
         String result = sw.getBuffer().toString().trim();
         //assertEquals(result, new String("Full Name: Vinod Kashyap"));
     }
-	
+
 	/*
 	@Test
     public void testDoGetRecipeSearchReturnsNull() throws Exception {
@@ -182,9 +181,46 @@ public class IHSearchTest {
        }
     }*/
 	
+	@Test
+	public void getRestaurantReturnsCorrectRestaurantsWithRadius() {
+		IHSearch tester = new IHSearch();
+		ArrayList<Restaurant> testRestaurants = new ArrayList<Restaurant>();
+		
+		testRestaurants = tester.doRestaurantSearch("Chicken", "5", ".75");
+		
+		System.out.println("Restaurant size: " + testRestaurants.size());
+		for(int i = 0; i < testRestaurants.size(); i++) {
+			System.out.println(testRestaurants.get(i).getAddress());
+		}	
+		int x = 4;
+		boolean addressMatch = "3758 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(0).getAddress());
+		assertTrue(addressMatch);
+		addressMatch = "2809 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(1).getAddress())
+					|| "2809 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(2).getAddress());
+		assertTrue(addressMatch);
+		addressMatch = "2828 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(2).getAddress())
+					|| "2828 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(3).getAddress());
+		assertTrue(addressMatch);
+		assertTrue(testRestaurants.size() <= x);
+		
+		testRestaurants = tester.doRestaurantSearch("Taco", "3", "100");
+		
+		System.out.println("Restaurant size: " + testRestaurants.size());
+		for(int i = 0; i < testRestaurants.size(); i++) {
+			System.out.println(testRestaurants.get(i).getAddress());
+		}
+		
+		assertTrue("835 W Jefferson Blvd #1735, Los Angeles, CA 90089, USA".equals(testRestaurants.get(0).getAddress()));
+		assertTrue("3748 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(1).getAddress()));
+		assertEquals(3, testRestaurants.size(), "None of the restaurants are limited by radius");		
+	}
 	
-	
-
-
-
+	@Test
+	public void testHaversineFunction() {
+		double HaversineTest = IHSearch.haversine(1000, 2000, 3000, 4000);
+		assertEquals(15619, HaversineTest, 100, "Checking Haversine works with all positive latitude and longitude");
+		
+		HaversineTest = IHSearch.haversine(-100, -200, -300, -400);
+		assertEquals(15619, HaversineTest, 100, "Checking Haversine works with all negative latitude and longitude");
+	}
 }

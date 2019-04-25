@@ -223,7 +223,8 @@ public class IHSearch extends HttpServlet {
 	 */
 	public ArrayList<Recipe> doRecipeSearch(String keyword, String number) {
 		keyword = keyword.replaceAll(" ", "+").toLowerCase();
-		String results = readWebsite("https://www.google.com/search?q=" + keyword + "%20recipe&num=100");
+		//Note from Yvette: Changed it so that we aren't always searching for 100 recipes because that's annoying
+		String results = readWebsite("https://www.google.com/search?q=" + keyword + "%20recipe&num="+number);
 		if (results == null) return null;
 		else {
 			
