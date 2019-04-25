@@ -29,7 +29,12 @@ public class LoginServlet extends HttpServlet {
 	
 	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
 	static String DB_USERNAME = "root";
-	static String DB_PASSWORD = "root";
+	static String DB_PASSWORD = "12345678Abc";
+	
+	LoginServlet() {
+		super();
+		
+	}
     
 	
     @Override
@@ -76,8 +81,8 @@ public class LoginServlet extends HttpServlet {
 						out.println("Incorrect password");
 					}
 				}
-			} else {
-				request.getSession().invalidate();
+			} else if (action.equals("logout")){
+				//request.getSession().setAttribute("username", null);
 			}
 			
 //			ps = conn.prepareStatement("SELECT * FROM User");
@@ -112,7 +117,7 @@ public class LoginServlet extends HttpServlet {
 		 rs = null;
 		 try {
 				Class.forName("com.mysql.jdbc.Driver");
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/project2?user=root&password=root&userSSL=false&serverTimezone=UTC");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/project2?user=" + DB_USERNAME + "&password=" + DB_PASSWORD + "&userSSL=false&serverTimezone=UTC");
 				ps = conn.prepareStatement(
 						"SELECT * FROM ListRestaurants WHERE username = ?");
 				ps.setString(1, username);

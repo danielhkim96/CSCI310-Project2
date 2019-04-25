@@ -14,8 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	RestaurantGetterTest.class, 
 	RecipeTest.class, 
 	RestaurantTest.class,
-	IHSearchTest_Yvette.class,
-	LoginServletTest.class
+	IHSearchTest.class,
+	UserLoginTest.class
 	})
 
 public class AllTests {
