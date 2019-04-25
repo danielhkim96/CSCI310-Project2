@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 	
 	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
 	static String DB_USERNAME = "root";
-	static String DB_PASSWORD = "12345678Abc";
+	static String DB_PASSWORD = "12345";
     
 	
     @Override
@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
 				} else {
 					out.println("Registration failed");
 				}
-			} else {
+			} else if (action.equals("login")) {
 				ps = conn.prepareStatement("SELECT * FROM User WHERE username = ?");
 				ps.setString(1, username);
 				
@@ -70,6 +70,8 @@ public class LoginServlet extends HttpServlet {
 						out.println("Incorrect password");
 					}
 				}
+			} else {
+				request.getSession().invalidate();
 			}
 			
 //			ps = conn.prepareStatement("SELECT * FROM User");
