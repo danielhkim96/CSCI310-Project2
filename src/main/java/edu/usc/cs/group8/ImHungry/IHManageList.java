@@ -28,9 +28,6 @@ import java.util.ArrayList;
 @WebServlet("/IHManageList")
 public class IHManageList extends HttpServlet {
 
-	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
-	static String DB_USERNAME = "root";
-	static String DB_PASSWORD = "12345678Abc";
 
 	/**
 	 * search_query for text
@@ -38,8 +35,12 @@ public class IHManageList extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
+	static String DB_USERNAME = "root";
+	static String DB_PASSWORD = "12345678Abc";
+	
 	// get database name later
-	private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/project2?user=" + DB_USERNAME + "&password=" + DB_PASSWORD + "&useSSL=false&serverTimezone=UTC";
+	private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/project2?user=" + DB_USERNAME + "&password=" + DB_PASSWORD + "&userSSL=false&serverTimezone=UTC";
 	Connection conn = null;
 	Statement st = null;
 	ResultSet rs = null;
@@ -52,55 +53,9 @@ public class IHManageList extends HttpServlet {
 	public IHManageList() throws ClassNotFoundException {
         super();
         // TODO Auto-generated constructor stub
+		
         
-        
-        /*
-    	try {
-    		
-    		Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
-			ps = conn.prepareStatement(
-					"INSERT INTO List ("
-					+ "listName"
-					+ ") VALUES ('" 
-					+ "favorites"
-					+ "');");
-			ps.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	try {
-    		Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
-			ps = conn.prepareStatement(
-					"INSERT INTO List ("
-					+ "listName"
-					+ ") VALUES ('" 
-					
-					+ "toExplore"
-					+ "');");
-			ps.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	try {
-    		Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
-			ps = conn.prepareStatement(
-					"INSERT INTO List ("
-				
-					+ "listName"
-					+ ") VALUES ('" 
-				
-					+ "doNotShow"
-					+ "');");
-			ps.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+       
     }
 	
 	/*
@@ -168,6 +123,7 @@ public class IHManageList extends HttpServlet {
 			
 			//System.out.println(recipeID);
 			//String indicator = request.getParameter(")
+			
 			removeFromList(listID, itemIndex, userName, flag);
 			request.getRequestDispatcher("list_management_page.jsp?list_id=" + listID).forward(request, response);
 		}
@@ -276,8 +232,8 @@ public class IHManageList extends HttpServlet {
 			if(r instanceof Recipe) {
 				try {
 					ps = conn.prepareStatement(
-							"DELETE FROM ListRecipes WHERE username=" + userName + " AND " + "listIndex=" + listIndex
-							+ " AND " + "listName=" + listID);
+							"DELETE FROM ListRecipes WHERE username = '" + userName + "' AND " + "listIndex = '" + listIndex
+							+ "' AND " + "listName = '" + listID + "';");
 					ret = ps.execute();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -336,8 +292,8 @@ public class IHManageList extends HttpServlet {
 			else {
 				try {
 					ps = conn.prepareStatement(
-							"DELETE FROM ListRestaurants WHERE username=" + userName + " AND " +  "listIndex=" + listIndex
-							+ " AND " + "listName=" + listID);
+							"DELETE FROM ListRestaurants WHERE username = '" + userName + "' AND " +  "listIndex = '" + listIndex
+							+ "' AND " + "listName = '" + listID + "';");
 					ret = ps.execute();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -399,8 +355,20 @@ public class IHManageList extends HttpServlet {
 	public boolean removeFromList(String listID, String listIndex, String userName, String flag) {
 		boolean ret = false;
 		int index = 0;
-		System.out.println("before sql delete");
-		if (listIndex != null && !listIndex.equals("")) {
+		if(listID.equals("GROCERY_LIST")) {
+			index = Integer.parseInt(listIndex);
+			try {
+				ps = conn.prepareStatement(
+						"DELETE FROM Grocery WHERE username = '" + userName + "' AND " + "listIndex = '" + listIndex
+						 + "';");
+				ret = ps.execute();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ListManager.getInstance().removeFromGroceryList(index);
+		}
+		else if (listIndex != null && !listIndex.equals("")) {
 			
 			index = Integer.parseInt(listIndex);
 			// how to identify if from listRestaurants or ListRecipes
@@ -422,8 +390,8 @@ public class IHManageList extends HttpServlet {
 			else if (flag.equals("rest"))  {
 				try {
 					ps = conn.prepareStatement(
-							"DELETE FROM ListRestaurants WHERE username=" + userName + " AND " +  "listIndex=" + listIndex
-							+ " AND " + "listName=" + listID);
+							"DELETE FROM ListRestaurants WHERE username = '" + userName + "' AND " +  "listIndex = '" + listIndex
+							+ "' AND " + "listName = '" + listID + "';");
 					ret = ps.execute();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -446,9 +414,7 @@ public class IHManageList extends HttpServlet {
 				ListManager.getInstance().removeFromDoNotShow(index);
 			}
 			// change this later
-			if (listID.equals("GROCERY_LIST")) {
-				ListManager.getInstance().removeFromGroceryList(index);
-			}
+
 		//}
 		return ret;
 	}
@@ -470,28 +436,51 @@ public class IHManageList extends HttpServlet {
 			currListIndex = ListManager.getInstance().getDoNotShow().size();
 		}
 		// add grocery implementation later
-		
-		if (recipeID != null && !recipeID.equals("")) {
+		if(listID.equals("GROCERY_LIST")) {
+			
+			/*
+			 * ingredientName	VARCHAR(100) 	PRIMARY KEY,
+	username	VARCHAR(100)	NOT NULL,
+			 */
+			int index = Integer.parseInt(recipeID);
+			for(int i = 0; i < recipes.get(index).getIngredients().size(); ++i) {
+				currListIndex = ListManager.getInstance().getGroceryList().size();
+				try {
+		    		Class.forName("com.mysql.jdbc.Driver");
+					conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
+					ps = conn.prepareStatement(
+							"INSERT INTO Grocery ("
+							+ "ingredientName, "
+							+ "username, "
+							+ "listIndex"
+							+ ") VALUES ('" 
+							+ recipes.get(index).getIngredients().get(i) + "', '"
+							+ userName + "', '"
+							+ Integer.toString(currListIndex)
+							+ "');");
+					ret = ps.execute();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//ListManager.getInstance().map.put(recipes.get(index).getIngredients().get(i), ListManager.getInstance().getGroceryList().size());
+				ListManager.getInstance().getGroceryList().add(recipes.get(index).getIngredients().get(i));
+			}
+			
+			
+		}
+		else if (recipeID != null && !recipeID.equals("")) {
 			int index = Integer.parseInt(recipeID);
 			
 			// delimit instructions and ingredients by |
 			// cant add instructions with "'"
 			// clicked back to results, null items
-			String instructions = "";
-			for(int i = 0; i < recipes.get(index).getInstructions().size(); ++i) {
-				instructions += recipes.get(index).getInstructions().get(i);
-				if(i != recipes.get(index).getInstructions().size()-1) {
-					instructions += "|";
-				}
-			}
-			
-			String ingredients = "";
-			for(int i = 0; i < recipes.get(index).getIngredients().size(); ++i) {
-				ingredients += recipes.get(index).getIngredients().get(i);
-				if(i != recipes.get(index).getIngredients().size()-1) {
-					ingredients += "|";
-				}
-			}
+		
+
 			try {
 	    		Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
@@ -504,8 +493,7 @@ public class IHManageList extends HttpServlet {
 						+ "recipeImageURL, "
 						+ "recipeCookTime, "
 						+ "recipePrepTime, "
-						+ "recipeInstructions, "
-						+ "recipeIngredients"
+						+ "recipeInstructions"
 						+ ") VALUES ('" 
 						+ listID + "', '"
 						+ userName + "', '"
@@ -513,11 +501,47 @@ public class IHManageList extends HttpServlet {
 						+ Integer.toString(currListIndex) + "', '"
 						+ recipes.get(index).getImgURL() + "', '"
 						+ recipes.get(index).getCookTime() + "', '"
-						+ recipes.get(index).getPrepTime() + "', '"
-						+ instructions + "', '"
-						+ ingredients
+						+ recipes.get(index).getPrepTime()
 						+ "');");
 				ret = ps.execute();
+				for(int i = 0; i < recipes.get(index).getInstructions().size(); ++i) {
+					ps = conn.prepareStatement(
+							"INSERT INTO Instructions ("
+							+ "instruction, "
+							+ "username, "
+							+ "recipeName,"
+							+ "listIndex"
+							
+							+ ") VALUES ('" 
+							+ recipes.get(index).getInstructions().get(i) + "', '"
+							+ userName + "', '"
+							+ recipes.get(index).getName() + "', '"
+							+ Integer.toString(i) 
+			
+							+ "');");
+					ret = ps.execute();
+				}
+				
+				
+				
+				for(int i = 0; i < recipes.get(index).getIngredients().size(); ++i) {
+					ps = conn.prepareStatement(
+							"INSERT INTO Ingredients ("
+							+ "ingredient, "
+							+ "username, "
+							+ "recipeName,"
+							+ "listIndex"
+							
+							+ ") VALUES ('" 
+							+ recipes.get(index).getIngredients().get(i) + "', '"
+							+ userName + "', '"
+							+ recipes.get(index).getName() + "', '"
+							+ Integer.toString(i) 
+			
+							+ "');");
+					ret = ps.execute();
+				}
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -540,7 +564,8 @@ public class IHManageList extends HttpServlet {
 					ListManager.getInstance().addToGroceryList(recipes.get(index).getIngredients().get(i));
 				}
 			}
-		} if (restaurantID != null && !restaurantID.equals("")) {
+		} 
+		else if (restaurantID != null && !restaurantID.equals("")) {
 			int index = Integer.parseInt(restaurantID);
 			
 			try {

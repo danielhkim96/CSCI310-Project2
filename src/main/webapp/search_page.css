@@ -43,6 +43,18 @@ form {
 	background: #1a73e8;
 	color: #ffffff;
 }
+.btn.btn-logout {
+	border: 1px solid #f44336;
+	border-radius: 0;
+	color: #f44336;
+	position: absolute;
+	right: 1%;
+	top: 50%;
+}
+.btn.btn-logout:hover {
+	background: #f44336;
+	color: #ffffff;
+}
 .btn-group .btn {
     border-radius: 0;
 }
