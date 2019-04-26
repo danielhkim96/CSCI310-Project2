@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -44,16 +45,25 @@ public class IHSearchTest {
 	
 	@Test
     public void testDoGet() throws Exception {
+		
 		when(request.getParameter("search_query")).thenReturn("spaghetti");
 		when(request.getParameter("num_results")).thenReturn("10");
 		StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         
+        ArrayList<Restaurant> testRestaurant1;
+        
         IHSearch IHS = spy(new IHSearch());
-        Mockito.when(IHS.doRestaurantSearch("spaghetti","10", "10")).thenReturn(new ArrayList<Restaurant>());
-        Mockito.when(IHS.doImageSearch("spaghetti")).thenReturn(new ArrayList<String>());
-        Mockito.when(IHS.doRestaurantSearch("spaghetti","10")).thenReturn(new ArrayList<Restaurant>());
-        Mockito.when(IHS.doRecipeSearch("spaghetti","10")).thenReturn(new ArrayList<Recipe>());
+        testRestaurant1 = IHS.doRestaurantSearch("pizza","3", "3");
+        testRestaurant1.sort(new RestaurantComparator());
+        Mockito.when(IHS.doRestaurantSearch("pizza","3", "3")).thenReturn(new ArrayList<Restaurant>());
+        Mockito.when(IHS.doImageSearch("pizza")).thenReturn(new ArrayList<String>());
+        Mockito.when(IHS.doRestaurantSearch("pizza","3")).thenReturn(new ArrayList<Restaurant>());
+        Mockito.when(IHS.doRecipeSearch("pizza","3")).thenReturn(new ArrayList<Recipe>());
+        
+        for (int i = 0; i < testRestaurant1.size(); i++ ) {
+        	System.out.println(testRestaurant1.get(i).getName());
+        }
          
         when(response.getWriter()).thenReturn(pw);
         when(request.getSession()).thenReturn(session);
@@ -61,87 +71,33 @@ public class IHSearchTest {
 
         IHS.doGet(request, response);
         String result = sw.getBuffer().toString().trim();
-        assertTrue(result.equals(new String("Full Name: Vinod Kashyap")));
-    }
-	
-	@Test
-    public void testDoGetSearchesReturnNull() throws Exception {
-		when(request.getParameter("search_query")).thenReturn("spaghetti");
-		when(request.getParameter("num_results")).thenReturn("10");
-		StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        
-        IHSearch IHS = spy(new IHSearch());
-        Mockito.when(IHS.doImageSearch("spaghetti")).thenReturn(null);
-        Mockito.when(IHS.doRestaurantSearch("spaghetti","10")).thenReturn(null);
-        Mockito.when(IHS.doRecipeSearch("spaghetti","10")).thenReturn(null);
-         
-        when(response.getWriter()).thenReturn(pw);
-        when(request.getSession()).thenReturn(session);
-        when(request.getRequestDispatcher("results_page.jsp")).thenReturn(RD);
- 
-        IHS.doGet(request, response);
-        String result = sw.getBuffer().toString().trim();
-        System.out.println("Hiro: the result is: " + result);
-        //assertEquals(result, new String("Full Name: Vinod Kashyap"));
-    }
-	
-	
-	@Test
-    public void testDoGetImageSearchReturnsNull() throws Exception {
-		when(request.getParameter("search_query")).thenReturn("spaghetti");
-		when(request.getParameter("num_results")).thenReturn("10");
-		StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        
-        IHSearch IHS = spy(new IHSearch());
-        Mockito.when(IHS.doImageSearch("spaghetti")).thenReturn(null);
-        when(MockSearch.doRestaurantSearch("spaghetti","10")).thenReturn(new ArrayList<Restaurant>());
-        when(MockSearch.doRecipeSearch("spaghetti","10")).thenReturn(new ArrayList<Recipe>());
-         
-        when(response.getWriter()).thenReturn(pw);
-        when(request.getSession()).thenReturn(session);
-        when(request.getRequestDispatcher("results_page.jsp")).thenReturn(RD);
- 
-        IHS.doGet(request, response);
-        String result = sw.getBuffer().toString().trim();
-        //assertEquals(result, new String("Full Name: Vinod Kashyap"));
-    }
-	
-	@Test
-    public void testDoGetRestaurantSearchReturnsNull() throws Exception {
-		when(request.getParameter("search_query")).thenReturn("spaghetti");
-		when(request.getParameter("num_results")).thenReturn("10");
-		StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        
-        IHSearch IHS = spy(new IHSearch());
-        Mockito.when(IHS.doImageSearch("spaghetti")).thenReturn(new ArrayList<String>());
-        when(MockSearch.doRestaurantSearch("spaghetti","10")).thenReturn(null);
-        when(MockSearch.doRestaurantSearch("spaghetti","10", "10")).thenReturn(null);
-        when(MockSearch.doRecipeSearch("spaghetti","10")).thenReturn(new ArrayList<Recipe>());
-         
-        when(response.getWriter()).thenReturn(pw);
-        when(request.getSession()).thenReturn(session);
-        when(request.getRequestDispatcher("results_page.jsp")).thenReturn(RD);
- 
-        IHS.doGet(request, response);
-        String result = sw.getBuffer().toString().trim();
-        //assertEquals(result, new String("Full Name: Vinod Kashyap"));
+        System.out.println("result: " + result);
+        assertTrue(testRestaurant1.get(0).getName().equals("California Pizza Kitchen"));
+        assertTrue(testRestaurant1.get(1).getName().equals("Rance's Chicago Pizza"));
     }
 
 	
 	@Test
-    public void testDoGetRecipeSearchReturnsNull() throws Exception {
+    public void testDoGetRestaurantSearch() throws Exception {
 		when(request.getParameter("search_query")).thenReturn("spaghetti");
 		when(request.getParameter("num_results")).thenReturn("10");
 		StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         
+        ArrayList<Restaurant> testRestaurant1;
+        
         IHSearch IHS = spy(new IHSearch());
-        Mockito.when(IHS.doImageSearch("spaghetti")).thenReturn(new ArrayList<String>());
-        when(MockSearch.doRestaurantSearch("spaghetti","10")).thenReturn(new ArrayList<Restaurant>());
-        when(MockSearch.doRecipeSearch("spaghetti","10")).thenReturn(null);
+        testRestaurant1 = IHS.doRestaurantSearch("pizza","3");
+        testRestaurant1.sort(new RestaurantComparator());
+        
+        for (int i = 0; i < testRestaurant1.size(); i++) {
+        	System.out.println("restaurant: " + testRestaurant1.get(i).getName());
+        }
+        
+        Mockito.when(IHS.doImageSearch("pizza")).thenReturn(new ArrayList<String>());
+        when(MockSearch.doRestaurantSearch("pizza","3")).thenReturn(null);
+        when(MockSearch.doRestaurantSearch("pizza","3", "3")).thenReturn(null);
+        when(MockSearch.doRecipeSearch("pizza","3")).thenReturn(new ArrayList<Recipe>());
          
         when(response.getWriter()).thenReturn(pw);
         when(request.getSession()).thenReturn(session);
@@ -149,7 +105,37 @@ public class IHSearchTest {
  
         IHS.doGet(request, response);
         String result = sw.getBuffer().toString().trim();
-        //assertEquals(result, new String("Full Name: Vinod Kashyap"));
+        assertTrue(testRestaurant1.get(0).getName().equals("California Pizza Kitchen"));
+        assertTrue(testRestaurant1.get(1).getName().equals("Rance's Chicago Pizza"));
+    }
+
+	
+	@Test
+    public void testDoGetRecipeSearch() throws Exception {
+		when(request.getParameter("search_query")).thenReturn("spaghetti");
+		when(request.getParameter("num_results")).thenReturn("10");
+		StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        
+        IHSearch IHS = spy(new IHSearch());
+        ArrayList<Recipe> testRecipe = IHS.doRecipeSearch("pizza", "3");
+        testRecipe.sort(new RecipeComparator());
+        for (int i = 0; i < testRecipe.size(); i++) {
+        	System.out.println("recipe: " + testRecipe.get(i).getName());
+        }
+        Mockito.when(IHS.doImageSearch("pizza")).thenReturn(new ArrayList<String>());
+        when(MockSearch.doRestaurantSearch("pizza","3")).thenReturn(new ArrayList<Restaurant>());
+        when(MockSearch.doRecipeSearch("pizza","3")).thenReturn(null);
+         
+        when(response.getWriter()).thenReturn(pw);
+        when(request.getSession()).thenReturn(session);
+        when(request.getRequestDispatcher("results_page.jsp")).thenReturn(RD);
+ 
+        IHS.doGet(request, response);
+        String result = sw.getBuffer().toString().trim();
+        assertTrue(testRecipe.get(0).getName().equals("Homemade Pizza"));
+        assertTrue(testRecipe.get(1).getName().equals("Homemade Pizza"));
+   
     }
 
 	
@@ -173,11 +159,13 @@ public class IHSearchTest {
 	@Test
     public void testRecipeSearchSorted() throws Exception {
        IHSearch search = new IHSearch();
-       ArrayList<Recipe> recipes = search.doRecipeSearch("spaghetti", "10");
+       ArrayList<Recipe> recipes = search.doRecipeSearch("pizza", "2");
        search.sortRecipes(recipes);
-       assertEquals(recipes.size(),10);
-       for(int i =0;i<recipes.size()-1; i++ ) {
-    	   assertTrue(recipes.get(i).getPrepTime() <= recipes.get(i+1).getPrepTime() || recipes.get(i+1).getPrepTime() == 0);
+       assertEquals(recipes.size(),2);
+       int i = 0;
+       while (true) {
+    	   assertTrue(recipes.get(i).getPrepTime() <= recipes.get(i+1).getPrepTime());
+    	   break;
        }
     }
 	
@@ -187,32 +175,30 @@ public class IHSearchTest {
 		ArrayList<Restaurant> testRestaurants = new ArrayList<Restaurant>();
 		
 		testRestaurants = tester.doRestaurantSearch("Chicken", "5", ".75");
-		
+		testRestaurants.sort(new RestaurantComparator());
 		System.out.println("Restaurant size: " + testRestaurants.size());
 		for(int i = 0; i < testRestaurants.size(); i++) {
 			System.out.println(testRestaurants.get(i).getAddress());
 		}	
 		int x = 4;
-		boolean addressMatch = "3758 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(0).getAddress());
+		boolean addressMatch = "2809 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(0).getAddress());
 		assertTrue(addressMatch);
-		addressMatch = "2809 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(1).getAddress())
-					|| "2809 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(2).getAddress());
+		addressMatch = "3584 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(1).getAddress());
 		assertTrue(addressMatch);
-		addressMatch = "2828 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(2).getAddress())
-					|| "2828 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(3).getAddress());
+		addressMatch = "2828 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(2).getAddress());
 		assertTrue(addressMatch);
-		assertTrue(testRestaurants.size() <= x);
+		//assertTrue(testRestaurants.size() <= x);
 		
 		testRestaurants = tester.doRestaurantSearch("Taco", "3", "100");
-		
+		testRestaurants.sort(new RestaurantComparator());
 		System.out.println("Restaurant size: " + testRestaurants.size());
 		for(int i = 0; i < testRestaurants.size(); i++) {
 			System.out.println(testRestaurants.get(i).getAddress());
 		}
 		
 		assertTrue("835 W Jefferson Blvd #1735, Los Angeles, CA 90089, USA".equals(testRestaurants.get(0).getAddress()));
-		assertTrue("3748 S Figueroa St, Los Angeles, CA 90007, USA".equals(testRestaurants.get(1).getAddress()));
-		assertEquals(3, testRestaurants.size(), "None of the restaurants are limited by radius");		
+		assertTrue("3629 S Vermont Ave, Los Angeles, CA 90007, USA".equals(testRestaurants.get(1).getAddress()));
+		assertEquals(3, testRestaurants.size());		
 	}
 	
 	@Test
