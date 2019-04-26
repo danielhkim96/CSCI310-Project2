@@ -32,11 +32,11 @@ public class LoginServlet extends HttpServlet {
 
 	static String DB_PASSWORD = "12345678Abc";
 	
-	LoginServlet() {
-		super();
-		
-	}
-	
+//	LoginServlet(){
+//		super();
+//		
+//	}
+//	
     
 	
     @Override
@@ -71,6 +71,7 @@ public class LoginServlet extends HttpServlet {
 					int update = ps.executeUpdate();
 					if (update == 1) {
 						out.println("Registration successful");
+						request.getSession().setAttribute("username", username);
 					} 
 				}
 			} else if (action.equals("login")) {
@@ -81,6 +82,7 @@ public class LoginServlet extends HttpServlet {
 				if (rs.next()) {
 					if (password.equals(rs.getString("password"))) {
 						out.println("Login successful");
+						request.getSession().setAttribute("username", username);
 					} else {
 						out.println("Incorrect password");
 					}
