@@ -199,7 +199,8 @@
 			      						String ingredient = (String)list.get(i);
 			      						%>
 			      							<tr><th><%=ingredient %></th></tr>
-			      						<%
+			      							<input type="radio" value=<%=i %> name="only_one_selection">Select <%=ingredient %> from this list </input>
+			      						<br></tr><%
 			      					}
 			      				}
 			      			

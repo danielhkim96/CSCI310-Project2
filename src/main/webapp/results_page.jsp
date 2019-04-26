@@ -56,6 +56,7 @@
 	<body>
 		<%
 			String username = (String) session.getAttribute("username");
+			int ITEMS_EACH_PAGE = 5;
 		%>
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/ssbootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -279,17 +280,32 @@
 				
 				<div class="center">
 					<div class="pagination">
-					  <a href="#">&laquo;</a>
+					  <a href="#">Previous</a>
 					  <% 
 					  int num_results = Integer.parseInt((String)session.getAttribute("num_results"));
-					  int num_pages = num_results/5;
-					  if (num_results%5 > 0){
+					  int num_pages = num_results/ITEMS_EACH_PAGE;
+					  if (num_results%ITEMS_EACH_PAGE > 0){
 						  num_pages ++;
 					  }
-					  for (int i = 1; i < num_pages + 1; i++){
-						  %> <a href="#" onclick="location.href = 'results_page.jsp?page_number=<%=i %>' "><%=i %></a>
-					  <%} %>
-					  <a href="#">&raquo;</a>
+					  int num_5_page_section = num_pages/5;
+					  if (num_pages%5 > 0){
+						  num_5_page_section ++;
+					  }
+					  int curr_5_page_index = 0;
+					  if (num_5_page_section == 1){
+						  for (int i = 1; i < num_pages + 1; i++){
+							  %> <a href="#" onclick="location.href = 'results_page.jsp?page_number=<%=i %>' "><%=i %></a>
+						  <%}
+					  }
+					  else{
+						  for (int i = 1; i < 6; i++){
+							  %> <a href="#" onclick="location.href = 'results_page.jsp?page_number=<%=i %>' "><%=i %></a>
+						  <%}
+					  }
+					   %>
+					   <!-- to be done yet -->
+					  <a href="#" onclick="location.href = 'results_page.jsp?page_number=<%=1 %>' ">Next</a>
+					 
 					</div>
 				</div>
 				
@@ -318,8 +334,8 @@
 									if (request.getParameter("page_number") != null){
 										page_number = Integer.parseInt(request.getParameter("page_number"));
 									};
-									int end_index = page_number * 5;
-									int start_index = end_index - 5;
+									int end_index = page_number * ITEMS_EACH_PAGE;
+									int start_index = end_index - ITEMS_EACH_PAGE;
 									
 									//TODO: error checking on the end_index;
 									

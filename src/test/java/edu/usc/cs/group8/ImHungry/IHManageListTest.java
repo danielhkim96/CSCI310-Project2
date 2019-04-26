@@ -178,11 +178,12 @@ public class IHManageListTest {
 		IHSearch search = new IHSearch();
 		ArrayList<Recipe> testRecipes = search.doRecipeSearch("falafel", "3");
 		ArrayList<Restaurant> testRestaurants = new ArrayList<Restaurant>();
-		//= search.doRestaurantSearch("ramen", "3");
-		/*
+		testRestaurants = search.doRestaurantSearch("ramen", "3");
+		System.out.println(Integer.toString(testRecipes.size()));
+		System.out.println("SIZE OF FALAFEL INGREDIENTS ARRAY:" + Integer.toString(testRecipes.get(0).getIngredients().size()));
 		for(int i = 0; i < testRecipes.get(0).getIngredients().size(); ++i) {
 			System.out.println(testRecipes.get(0).getIngredients().get(i));
-		}*/
+		}
 		
 	
 		search.sortRecipes(testRecipes);
