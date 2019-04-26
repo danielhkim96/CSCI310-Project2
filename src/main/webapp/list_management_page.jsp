@@ -161,12 +161,8 @@
 			      							System.out.println("list name: " + list_name);
 			      						}
 			      						String redirect_link = "http://localhost:8080/ImHungry/IHManageList?list_id=" + list_name + "&action=DISPLAY&item_id=" + Integer.toString(i) + "&username=" + username; 
-			      						%><tr><th><a href=<%= redirect_link%>><%=recipe_name %> </th> <th>Prep Time: <%=prepTime %></th> <th>Cook Time: <%=cookTime %></th></a>
-			      						
-			      						<!-- The following radio button will allow the user to choose one of the items 
-			      						from the current list, and conduct the MOVE or DELETE function -->
-			      						<input type="radio" value=<%=i %> name="only_one_selection">Select <%=recipe_name %> from this List</input>
-			      						<br></tr><%
+			      						%><tr><td style="display: none"><%=i %></td><td><a href=<%= redirect_link%>><%=recipe_name %> </td> <td>Prep Time: <%=prepTime %></td> <td>Cook Time: <%=cookTime %></td></a>
+			      						<%
 			      					}
 			      					else if (list.get(i) instanceof Restaurant){ //If it is a restaurant, then required restaurant information will be displayed in one row in the table
 			      						Restaurant restaurant = (Restaurant)list.get(i);
@@ -182,23 +178,18 @@
 			      						}
 			      						String redirect_link = "IHManageList?list_id=" + list_name + "&action=DISPLAY&item_id=" + Integer.toString(i) + "&username=" + username; 
 
-			      						%> <tr><th><a href=<%= redirect_link %>><%=restaurant_name %> </th> <th>Drive Time: <%=driveTime %> min </th> <th><%=address %> </th> <th><%
+			      						%> <tr><td style="display: none"><%=i %></td><td><a href=<%= redirect_link %>><%=restaurant_name %> </td> <td>Drive Time: <%=driveTime %> min </td> <td><%=address %> </td> <td><%
 											for (int j = 0; j < restaurant.getPriceRange(); j++ ){%>
 												$
-											<% } %></th></a>  
-
-			      						<!-- The following radio button will allow the user to choose one of the items 
-			      						from the current list, and conduct the MOVE or DELETE function -->
-			      						<input type="radio" value=<%=i %> name="only_one_selection">Select <%=restaurant_name %> from this list </input>
-			      						<br></tr><%
+											<% } %></td></a>
+										<%
 			      					}
 			      					//NEW FOR GROCERY_LIST, if it is neither a Recipe nor Restaurant, then it is an ingredient
 			      					else {
 			      						String ingredient = (String)list.get(i);
 			      						%>
-			      							<tr><th><%=ingredient %></th></tr>
-			      							<input type="radio" value=<%=i %> name="only_one_selection">Select <%=ingredient %> from this list </input>
-			      						<br></tr><%
+			      							<tr><td style="display: none"><%=i %></td><td><%=ingredient %></td></tr>
+			      						<%
 			      					}
 			      				}
 			      			
@@ -216,33 +207,20 @@
 			      		<button type="submit" id="delete_button">Delete the Selected Item from the list</button>
 			      		<!-- The following JavaScript function deals with Deleting the Selected Item from the Current List -->
 			      		<script type="text/javascript">
-			      			document.getElementById("delete_button").onclick=function(){
-			      				var list_name = getUrlVars()["list_id"];
-			      				var radios = document.getElementsByTagName('input');
-			      				var item_index;
-			      				var username = '<%= username %>';
-			      				for (var i = 0; i < radios.length; i++) {
-			      				    if (radios[i].type === 'radio' && radios[i].checked) {
-			      				        // get the item_index from the radio button input
-			      				        item_index = radios[i].value;       
-			      				    }
-			      				}
-			      				/*
-			      				var flag = "";
-			      				if(list.get(item_index) instanceof Restaurant){
-			      					flag = "restaurant";
-			      				}
-			      				else if (list.get(item_index) instanceof Recipe){
-			      					flag = "recipe";
-			      				}*/
-			      				//send the REMOVE request to the backend servlet and let the backend deal with the remove logic and session storage.
-			      				/*var redirect_link = "IHManageList?list_id=" + list_name + "&action=REMOVE&item_id=" + item_index.toString();
- 			      				*/
-			      				var redirect_link = "IHManageList?list_id=" + list_name + "&username=" + username + "&action=REMOVE&item_id=" + item_index.toString() ;
- 
+				      		$("table tr").click(function() {
+				      		   $(this).addClass('selected');
+				      		   $(this).siblings().removeClass('selected');
+				      		});
+				      		
+				      		$("#delete_button").click(function() {
+				      			var index = $("tr.selected").find("td:first").html();
+				      			var username = '<%= username %>';
+				      			
+				      			var list_name = getUrlVars()["list_id"];
+				      			var redirect_link = "IHManageList?list_id=" + list_name + "&username=" + username + "&action=REMOVE&item_id=" + index.toString() ;
+				      			console.log(redirect_link);
 			      				location.href = redirect_link;
-			      				
-			      			}
+				      		});
 			      			
 			      			//Helper function to get the value of the attribute in the url
 			      			function getUrlVars() {
@@ -251,8 +229,7 @@
 			      			        vars[key] = value;
 			      			    });
 			      			    return vars;
-			      			}
-			      			
+			      			}	
 			      		</script>
 			      		
 			      		<!-- If the user clicks on the MOVE button, then the selected item from the radio buttons
