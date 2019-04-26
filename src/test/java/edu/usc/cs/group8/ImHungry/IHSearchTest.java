@@ -86,7 +86,7 @@ public class IHSearchTest {
         //assertEquals(result, new String("Full Name: Vinod Kashyap"));
     }
 	
-	/*
+	
 	@Test
     public void testDoGetImageSearchReturnsNull() throws Exception {
 		when(request.getParameter("search_query")).thenReturn("spaghetti");
@@ -106,7 +106,7 @@ public class IHSearchTest {
         IHS.doGet(request, response);
         String result = sw.getBuffer().toString().trim();
         //assertEquals(result, new String("Full Name: Vinod Kashyap"));
-    }*/
+    }
 	
 	@Test
     public void testDoGetRestaurantSearchReturnsNull() throws Exception {
@@ -130,7 +130,7 @@ public class IHSearchTest {
         //assertEquals(result, new String("Full Name: Vinod Kashyap"));
     }
 
-	/*
+	
 	@Test
     public void testDoGetRecipeSearchReturnsNull() throws Exception {
 		when(request.getParameter("search_query")).thenReturn("spaghetti");
@@ -152,7 +152,7 @@ public class IHSearchTest {
         //assertEquals(result, new String("Full Name: Vinod Kashyap"));
     }
 
-	*/
+	
 	@Test
     public void testRestaurantSearchSorted() throws Exception {
        IHSearch IHS = new IHSearch();
@@ -169,7 +169,7 @@ public class IHSearchTest {
 
     }
 	
-	/*
+	
 	@Test
     public void testRecipeSearchSorted() throws Exception {
        IHSearch search = new IHSearch();
@@ -179,7 +179,7 @@ public class IHSearchTest {
        for(int i =0;i<recipes.size()-1; i++ ) {
     	   assertTrue(recipes.get(i).getPrepTime() <= recipes.get(i+1).getPrepTime() || recipes.get(i+1).getPrepTime() == 0);
        }
-    }*/
+    }
 	
 	@Test
 	public void getRestaurantReturnsCorrectRestaurantsWithRadius() {

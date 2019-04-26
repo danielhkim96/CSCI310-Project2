@@ -29,7 +29,7 @@ public class ListManagerTest {
 		//assertFalse(ListManager.getInstance().favoritesContains(myRestaurant));*/
 	}
 	
-	/*
+	
 	@Test
 	public void testFavorites() {
 		ListManager.getInstance().reset();
@@ -94,6 +94,6 @@ public class ListManagerTest {
 		assertEquals(ListManager.getInstance().getDoNotShow().size(),0);
 		assertFalse(ListManager.getInstance().doNotShowContains(myRecipe));
 		assertFalse(ListManager.getInstance().doNotShowContains(myRestaurant));
-	}*/
+	}
 
 }
