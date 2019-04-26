@@ -37,7 +37,7 @@ public class IHManageList extends HttpServlet {
 	
 	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
 	static String DB_USERNAME = "root";
-	static String DB_PASSWORD = "12345678Abc";
+	static String DB_PASSWORD = "root";
 	
 	// get database name later
 	private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/project2?user=" + DB_USERNAME + "&password=" + DB_PASSWORD + "&userSSL=false&serverTimezone=UTC";
@@ -178,6 +178,7 @@ public class IHManageList extends HttpServlet {
 	 */
 	public boolean moveToList(String listID, String destinationID, String listIndex, String userName) {
 		boolean ret = false;
+		int temp = 0;
 		if (listIndex != null && !listIndex.equals("")) {
 		
 			int index = Integer.parseInt(listIndex);
@@ -234,7 +235,8 @@ public class IHManageList extends HttpServlet {
 					ps = conn.prepareStatement(
 							"DELETE FROM ListRecipes WHERE username = '" + userName + "' AND " + "listIndex = '" + listIndex
 							+ "' AND " + "listName = '" + listID + "';");
-					ret = ps.execute();
+					temp = ps.executeUpdate();
+					ret = temp > 0;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -277,7 +279,8 @@ public class IHManageList extends HttpServlet {
 							+ tempRecipe.getCookTime() + "', '"
 							+ tempRecipe.getPrepTime()
 							+ "');");
-					ret = ps.execute();
+					temp = ps.executeUpdate();
+					ret = temp > 0;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -291,7 +294,8 @@ public class IHManageList extends HttpServlet {
 					ps = conn.prepareStatement(
 							"DELETE FROM ListRestaurants WHERE username = '" + userName + "' AND " +  "listIndex = '" + listIndex
 							+ "' AND " + "listName = '" + listID + "';");
-					ret = ps.execute();
+					temp = ps.executeUpdate();
+					ret = temp > 0;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -321,7 +325,8 @@ public class IHManageList extends HttpServlet {
 							+ Double.toString(tempRestaurant.getRating()) + "', '"
 							+ Integer.toString(tempRestaurant.getDriveTime())
 							+ "');");
-					ret = ps.execute();
+					temp = ps.executeUpdate();
+					ret = temp > 0;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -352,13 +357,17 @@ public class IHManageList extends HttpServlet {
 	public boolean removeFromList(String listID, String listIndex, String userName, String flag) {
 		boolean ret = false;
 		int index = 0;
+		int temp = 0;
 		if(listID.equals("GROCERY_LIST")) {
 			index = Integer.parseInt(listIndex);
 			try {
+				System.out.println(userName);
+				System.out.println(listIndex);
 				ps = conn.prepareStatement(
 						"DELETE FROM Grocery WHERE username = '" + userName + "' AND " + "listIndex = '" + listIndex
 						 + "';");
-				ret = ps.execute();
+				temp = ps.executeUpdate();
+				ret = temp > 0;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -377,7 +386,8 @@ public class IHManageList extends HttpServlet {
 					ps = conn.prepareStatement(
 							"DELETE FROM ListRecipes WHERE username = '" + userName + "' AND " + "listIndex = '" + listIndex
 							+ "' AND " + "listName = '" + listID + "';");
-					ret = ps.execute();
+					temp = ps.executeUpdate();
+					ret = temp > 0;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -389,7 +399,8 @@ public class IHManageList extends HttpServlet {
 					ps = conn.prepareStatement(
 							"DELETE FROM ListRestaurants WHERE username = '" + userName + "' AND " +  "listIndex = '" + listIndex
 							+ "' AND " + "listName = '" + listID + "';");
-					ret = ps.execute();
+					temp = ps.executeUpdate();
+					ret = temp > 0;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -422,6 +433,7 @@ public class IHManageList extends HttpServlet {
 	 */
 	public boolean addToList(String listID, String recipeID, String restaurantID, ArrayList<Recipe> recipes, ArrayList<Restaurant> restaurants, String userName) {
 		boolean ret = false;
+		int temp = 0;
 		int currListIndex = 0;
 		if (listID.equals("FAVORITES")) {
 			currListIndex = ListManager.getInstance().getFavorites().size();
@@ -453,9 +465,10 @@ public class IHManageList extends HttpServlet {
 							+ ") VALUES ('" 
 							+ recipes.get(index).getIngredients().get(i) + "', '"
 							+ userName + "', '"
-							+ Integer.toString(currListIndex)
+							+ Integer.toString(i)
 							+ "');");
-					ret = ps.execute();
+					temp = ps.executeUpdate();
+					ret = temp > 0;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -499,7 +512,8 @@ public class IHManageList extends HttpServlet {
 						+ recipes.get(index).getCookTime() + "', '"
 						+ recipes.get(index).getPrepTime()
 						+ "');");
-				ret = ps.execute();
+				temp = ps.executeUpdate();
+				ret = temp > 0;
 				for(int i = 0; i < recipes.get(index).getInstructions().size(); ++i) {
 					ps = conn.prepareStatement(
 							"INSERT INTO Instructions ("
@@ -515,7 +529,8 @@ public class IHManageList extends HttpServlet {
 							+ Integer.toString(i) 
 			
 							+ "');");
-					ret = ps.execute();
+					temp = ps.executeUpdate();
+					ret = temp > 0;
 				}
 				
 				
@@ -535,7 +550,8 @@ public class IHManageList extends HttpServlet {
 							+ Integer.toString(i) 
 			
 							+ "');");
-					ret = ps.execute();
+					temp = ps.executeUpdate();
+					ret = temp > 0;
 				}
 				
 			} catch (SQLException e) {
@@ -555,11 +571,7 @@ public class IHManageList extends HttpServlet {
 			if (listID.equals("DO_NOT_SHOW")) {
 				ListManager.getInstance().addToDoNotShow(recipes.get(index));
 			}
-			if (listID.equals("GROCERY_LIST")) {
-				for(int i = 0; i < recipes.get(index).getIngredients().size(); ++i) {
-					ListManager.getInstance().addToGroceryList(recipes.get(index).getIngredients().get(i));
-				}
-			}
+
 		} 
 		else if (restaurantID != null && !restaurantID.equals("")) {
 			int index = Integer.parseInt(restaurantID);
@@ -589,7 +601,8 @@ public class IHManageList extends HttpServlet {
 						+ Double.toString(restaurants.get(index).getRating()) + "', '"
 						+ Integer.toString(restaurants.get(index).getDriveTime())
 						+ "');");
-				ret = ps.execute();
+				temp = ps.executeUpdate();
+				ret = temp > 0;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

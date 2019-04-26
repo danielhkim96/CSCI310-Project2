@@ -167,136 +167,162 @@ public class IHManageListTest {
         when(request.getParameter("action")).thenReturn("DISPLAY");
         when(request.getParameter("list_id")).thenReturn("DO_NOT_SHOW");
         when(request.getParameter("item_id")).thenReturn("1");
-        
+
         manager.doGet(request, response);
+        when(request.getParameter("action")).thenReturn("REMOVE");
+        when(request.getParameter("list_id")).thenReturn("DO_NOT_SHOW");
+        when(request.getParameter("item_id")).thenReturn("0");
+        
 	}
 
 	@Test
 	public void testAddToList() throws ClassNotFoundException {
 		ListManager.getInstance().reset();
-
-		IHSearch search = new IHSearch();
-		ArrayList<Recipe> testRecipes = search.doRecipeSearch("falafel", "3");
-		ArrayList<Restaurant> testRestaurants = new ArrayList<Restaurant>();
-		testRestaurants = search.doRestaurantSearch("ramen", "3");
-		System.out.println(Integer.toString(testRecipes.size()));
-		System.out.println("SIZE OF FALAFEL INGREDIENTS ARRAY:" + Integer.toString(testRecipes.get(0).getIngredients().size()));
-		for(int i = 0; i < testRecipes.get(0).getIngredients().size(); ++i) {
-			System.out.println(testRecipes.get(0).getIngredients().get(i));
-		}
 		
-	
-		search.sortRecipes(testRecipes);
-		//search.sortRestaurants(testRestaurants);
+		ArrayList<Restaurant> testRestaurants2 = new ArrayList<Restaurant>();
+		
+		ArrayList<Recipe> testRecipe2 = new ArrayList<Recipe>();
+		Restaurant temp1 = new Restaurant("mcd", "");
+		testRestaurants2.add(temp1);
+		ArrayList<String> tempIngredients = new ArrayList<String>();
+		tempIngredients.add("syrup");
+		ArrayList<String> tempInstructions = new ArrayList<String>();
+		tempInstructions.add("cut banana");
+		Recipe temp2 = new Recipe("waffle", "", "", "asdfasdg",  tempIngredients, tempInstructions);
+		testRecipe2.add(temp2);
+
 		
 		IHManageList manager = new IHManageList();
-		manager.addToList("GROCERY_LIST", "0", "", testRecipes, testRestaurants, "test");
-		/*
-		manager.addToList("DO_NOT_SHOW", "0", "", testRecipes, testRestaurants);
-		manager.addToList("DO_NOT_SHOW", "", "0", testRecipes, testRestaurants);
-		manager.addToList("TO_EXPLORE", "1", "", testRecipes, testRestaurants);
-		manager.addToList("TO_EXPLORE", "", "1", testRecipes, testRestaurants);
-		manager.addToList("FAVORITES", "2", "", testRecipes, testRestaurants);
-		manager.addToList("FAVORITES", "", "2", testRecipes, testRestaurants);*/
-		assertEquals(manager.addToList("GROCERY_LIST", "0", "", testRecipes, testRestaurants, "test"),true);
+		assertEquals(true, manager.addToList("TO_EXPLORE", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
 		
-		/*
-		ArrayList<Recipe> newRecipes = search.doRecipeSearch("falafel", "3");
-		ArrayList<Restaurant> newRestaurants = search.doRestaurantSearch("ramen", "3");
-		search.sortRecipes(newRecipes);
-		search.sortRestaurants(newRestaurants);
 		
-		assertEquals(newRecipes.get(0), testRecipes.get(2));
-		assertFalse(newRecipes.contains(testRecipes.get(0)));
-		assertEquals(newRestaurants.get(0), testRestaurants.get(2));
-		assertFalse(newRestaurants.contains(testRestaurants.get(0)));*/
+		assertEquals(true, manager.addToList("GROCERY_LIST", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(false, manager.addToList("GROCERY_LIST", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		manager.removeFromList("GROCERY_LIST", "0", "test@usc.edu", "rest");
+		assertEquals(true, manager.addToList("TO_EXPLORE", "", "0", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("DO_NOT_SHOW", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("FAVORITES", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
 	}
 	
 	@Test
 	public void testRemoveFromList() throws ClassNotFoundException {
-		/*
-		ListManager.getInstance().reset();
-		IHSearch search = new IHSearch();
-		ArrayList<Recipe> oldRecipes = search.doRecipeSearch("falafel", "3");
-		ArrayList<Restaurant> oldRestaurants = new ArrayList<Restaurant>();
+		ArrayList<Restaurant> testRestaurants2 = new ArrayList<Restaurant>();
+		
+		ArrayList<Recipe> testRecipe2 = new ArrayList<Recipe>();
+		Restaurant temp1 = new Restaurant("mcd", "");
+		testRestaurants2.add(temp1);
+		ArrayList<String> tempIngredients = new ArrayList<String>();
+		tempIngredients.add("egg");
+		ArrayList<String> tempInstructions = new ArrayList<String>();
+		tempInstructions.add("cut banana");
+		Recipe temp2 = new Recipe("chicken", "", "", "asdfasdg",  tempIngredients, tempInstructions);
+		testRecipe2.add(temp2);
 
-		ArrayList<Recipe> testRecipes = oldRecipes;
-		ArrayList<Restaurant> testRestaurants = oldRestaurants;
-		search.sortRecipes(testRecipes);
-		//search.sortRestaurants(testRestaurants);
-		
 		IHManageList manager = new IHManageList();
-		manager.addToList("GROCERY_LIST", "0", "", testRecipes, testRestaurants);
-		manager.removeFromList("GROCERY_LIST", "0");
-		assertEquals(ListManager.getInstance().getGroceryList().get(0), testRecipes.get(0).getIngredients().get(1));
-		/*
-		manager.addToList("DO_NOT_SHOW", "0", "", testRecipes, testRestaurants);
-		manager.addToList("DO_NOT_SHOW", "", "0", testRecipes, testRestaurants);
-		manager.addToList("TO_EXPLORE", "1", "", testRecipes, testRestaurants);
-		manager.addToList("TO_EXPLORE", "", "1", testRecipes, testRestaurants);
-		manager.addToList("FAVORITES", "2", "", testRecipes, testRestaurants);
-		manager.addToList("FAVORITES", "", "2", testRecipes, testRestaurants);
-		
-		manager.removeFromList("FAVORITES", "1");
-		manager.removeFromList("TO_EXPLORE", "1");
-		manager.removeFromList("DO_NOT_SHOW", "1");
-		
-		
-		ArrayList<Recipe> newRecipes = search.doRecipeSearch("falafel", "3");
-		ArrayList<Restaurant> newRestaurants = search.doRestaurantSearch("ramen", "3");
-		search.sortRecipes(newRecipes);
-		search.sortRestaurants(newRestaurants);
-		
-		assertEquals(newRecipes.get(0), testRecipes.get(2));
-		assertFalse(newRecipes.contains(testRecipes.get(0)));
-		assertEquals(newRestaurants.get(0), oldRestaurants.get(0));
-		assertEquals(newRestaurants.get(1), oldRestaurants.get(1));
-		assertEquals(newRestaurants.get(2), oldRestaurants.get(2));*/
+		assertEquals(true, manager.addToList("GROCERY_LIST", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("TO_EXPLORE", "", "0", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("DO_NOT_SHOW", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("FAVORITES", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		int j = 0;
+		for(int i = 0; i < ListManager.getInstance().getToExplore().size(); ++i) {
+			if(ListManager.getInstance().getToExplore().get(i).getName().equals("mcd")){
+				j = i;
+				break;
+			}
+		}
+		assertEquals(true, manager.removeFromList("TO_EXPLORE", Integer.toString(j), "test@usc.edu", "rest"));
+		assertEquals(true, manager.removeFromList("GROCERY_LIST", "0",  "test@usc.edu", "rest"));
+		for(int i = 0; i < ListManager.getInstance().getDoNotShow().size(); ++i) {
+			if(ListManager.getInstance().getDoNotShow().get(i).getName().equals("chicken")){
+				j = i;
+				break;
+			}
+		}
+		assertEquals(true, manager.removeFromList("DO_NOT_SHOW", Integer.toString(j), "test@usc.edu", "rec"));
+		for(int i = 0; i < ListManager.getInstance().getFavorites().size(); ++i) {
+			if(ListManager.getInstance().getFavorites().get(i).getName().equals("chicken")){
+				j = i;
+				break;
+			}
+		}
+		assertEquals(true, manager.removeFromList("FAVORITES", Integer.toString(j), "test@usc.edu", "rec"));
 	}
 	
-	/*
+	
 	@Test
 	public void testMoveToList() throws ClassNotFoundException {
-		ListManager.getInstance().reset();
+		ArrayList<Restaurant> testRestaurants2 = new ArrayList<Restaurant>();
 		
+		ArrayList<Recipe> testRecipe2 = new ArrayList<Recipe>();
+		Restaurant temp1 = new Restaurant("mcd", "");
+		testRestaurants2.add(temp1);
+		ArrayList<String> tempIngredients = new ArrayList<String>();
+		tempIngredients.add("egg");
+		ArrayList<String> tempInstructions = new ArrayList<String>();
+		tempInstructions.add("cut banana");
+		Recipe temp2 = new Recipe("chicken", "", "", "asdfasdg",  tempIngredients, tempInstructions);
+		testRecipe2.add(temp2);
+
 		IHManageList manager = new IHManageList();
-		IHSearch search = new IHSearch();
-		ArrayList<Recipe> recipe = search.doRecipeSearch("falafel", "1");
-		ArrayList<Restaurant> restaurant = search.doRestaurantSearch("ramen", "1");
+		assertEquals(true, manager.addToList("GROCERY_LIST", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("TO_EXPLORE", "", "0", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("DO_NOT_SHOW", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("FAVORITES", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("TO_EXPLORE", "0", "", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("DO_NOT_SHOW", "", "0", testRecipe2, testRestaurants2, "test@usc.edu"));
+		assertEquals(true, manager.addToList("FAVORITES", "", "0", testRecipe2, testRestaurants2, "test@usc.edu"));
 		
-		manager.addToList("DO_NOT_SHOW", "0", "", recipe, restaurant);
-		manager.addToList("DO_NOT_SHOW", "", "0", recipe, restaurant);
+		int j = 0;
+		for(int i = 0; i < ListManager.getInstance().getToExplore().size(); ++i) {
+			if(ListManager.getInstance().getToExplore().get(i).getName().equals("mcd")){
+				j = i;
+				break;
+			}
+		}
+		assertEquals(true, manager.moveToList("TO_EXPLORE", "FAVORITES", Integer.toString(j), "test@usc.edu"));
+		//assertEquals(true, manager.removeFromList("GROCERY_LIST", "0",  "test@usc.edu", "rest"));
+		for(int i = 0; i < ListManager.getInstance().getDoNotShow().size(); ++i) {
+			if(ListManager.getInstance().getDoNotShow().get(i).getName().equals("chicken")){
+				j = i;
+				break;
+			}
+		}
+		assertEquals(true, manager.moveToList("DO_NOT_SHOW", "To_EXPLORE", Integer.toString(j), "test@usc.edu"));
+
+		///assertEquals(true, manager.removeFromList("DO_NOT_SHOW", Integer.toString(j), "test@usc.edu", "rec"));
+		for(int i = 0; i < ListManager.getInstance().getFavorites().size(); ++i) {
+			if(ListManager.getInstance().getFavorites().get(i).getName().equals("chicken")){
+				j = i;
+				break;
+			}
+		}
+		assertEquals(true, manager.moveToList("FAVORITES", "DO_NOT_SHOW", Integer.toString(j), "test@usc.edu"));
 		
-		manager.moveToList("DO_NOT_SHOW", "FAVORITES", "1");
-		manager.moveToList("DO_NOT_SHOW", "TO_EXPLORE", "0");
-		
-		assertEquals(ListManager.getInstance().getDoNotShow().size(),0);
-		assertEquals(ListManager.getInstance().getToExplore().get(0),recipe.get(0));
-		assertEquals(ListManager.getInstance().getFavorites().get(0),restaurant.get(0));
-		
-		manager.removeFromList("FAVORITES", "0");
-		manager.removeFromList("TO_EXPLORE", "0");
-		manager.addToList("FAVORITES", "0", "", recipe, restaurant);
-		manager.addToList("FAVORITES", "", "0", recipe, restaurant);
-		manager.moveToList("FAVORITES", "DO_NOT_SHOW", "1");
-		manager.moveToList("FAVORITES", "TO_EXPLORE", "0");
-		
-		assertEquals(ListManager.getInstance().getFavorites().size(),0);
-		assertEquals(ListManager.getInstance().getToExplore().get(0),recipe.get(0));
-		assertEquals(ListManager.getInstance().getDoNotShow().get(0),restaurant.get(0));
-		
-		manager.removeFromList("DO_NOT_SHOW", "0");
-		manager.removeFromList("TO_EXPLORE", "0");
-		manager.addToList("TO_EXPLORE", "0", "", recipe, restaurant);
-		manager.addToList("TO_EXPLORE", "", "0", recipe, restaurant);
-		manager.moveToList("TO_EXPLORE", "DO_NOT_SHOW", "1");
-		manager.moveToList("TO_EXPLORE", "FAVORITES", "0");
-		
-		assertEquals(ListManager.getInstance().getToExplore().size(),0);
-		assertEquals(ListManager.getInstance().getFavorites().get(0),recipe.get(0));
-		assertEquals(ListManager.getInstance().getDoNotShow().get(0),restaurant.get(0));
-		
-		 
-	}*/
+		for(int i = 0; i < ListManager.getInstance().getToExplore().size(); ++i) {
+			if(ListManager.getInstance().getToExplore().get(i).getName().equals("chicken")){
+				j = i;
+				break;
+			}
+		}
+		assertEquals(true, manager.moveToList("TO_EXPLORE", "FAVORITES", Integer.toString(j), "test@usc.edu"));
+		//assertEquals(true, manager.removeFromList("GROCERY_LIST", "0",  "test@usc.edu", "rest"));
+		for(int i = 0; i < ListManager.getInstance().getDoNotShow().size(); ++i) {
+			if(ListManager.getInstance().getDoNotShow().get(i).getName().equals("mcd")){
+				j = i;
+				break;
+			}
+		}
+		assertEquals(true, manager.moveToList("DO_NOT_SHOW", "To_EXPLORE", Integer.toString(j), "test@usc.edu"));
+
+		///assertEquals(true, manager.removeFromList("DO_NOT_SHOW", Integer.toString(j), "test@usc.edu", "rec"));
+		for(int i = 0; i < ListManager.getInstance().getFavorites().size(); ++i) {
+			if(ListManager.getInstance().getFavorites().get(i).getName().equals("mcd")){
+				j = i;
+				break;
+			}
+		}
+		assertEquals(true, manager.moveToList("FAVORITES", "DO_NOT_SHOW", Integer.toString(j), "test@usc.edu"));
+		//assertEquals(true, manager.removeFromList("FAVORITES", Integer.toString(j), "test@usc.edu", "rec"));
+	}
 
 }
