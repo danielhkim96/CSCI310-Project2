@@ -2,89 +2,167 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
 		<link href="login_page.css" type="text/css" rel="stylesheet"/>
+	</head>
+	<body>
+		<div class="login-page">
+			<div class="form">
+				<form name="login" id="login" class="login-form" method="post" onsubmit="return false">
+					<input name="email" id="emailL" type="text" placeholder="email address" pattern="[^]+@[^]+[.][a-z]{2,63}$" required/>
+					<input name="password" id="passwordL" type="password" placeholder="password" required/>
+					<input name="action" type="hidden" value="login"/>
+					<input type="submit" onclick="return validateForm(form.name)" value="login"/>
+					<p id="messageL"></p>
+					<p class="message" id="login">Not registered? <a href="#">Create an account</a></p>
+				</form>
+			    <form name="register" id="register" class="register-form" method="post" onsubmit="return false">
+					<input name="email" id="emailR" type="text" placeholder="email address" pattern="[^]+@[^]+[.][a-z]{2,63}$" required/>
+					<input name="password" id="passwordR" type="password" placeholder="password" required/>
+					<input name="password2" type="password" placeholder="re-enter password" required/>
+					<input name="action" type="hidden" value="register"/>
+					<input type="submit" onclick="return validateForm(form.name)" value="create"/>
+					<p id="messageR"></p>
+					<p class="message" id="register">Already registered? <a href="#">Sign In</a></p>
+			    </form>
+			</div>
+		</div>
 		
 		<script>
 			$(document).ready(function() {
 				$('.message a').on('click', function() {
 					$('form').animate({height: "toggle", opacity: "toggle"}, "slow");
 				});
+				
+				var inputL = document.getElementById("emailL");
+				var passwordL = document.getElementById("passwordL");
+				var	formL = document.getElementById("login");
+				
+				var	elemL = document.getElementById("messageL");
+				elemL.style.display = "none";
+				
+				var inputR = document.getElementById("emailR");
+				var passwordR = document.getElementById("passwordR");
+				var password2 = document.register.password2;
+				var formR = document.getElementById("register");
+				
+				var elemR = document.getElementById("messageR");
+				elemR.style.display = "none";
+
+				inputL.addEventListener("invalid", function(e) {
+					e.preventDefault();
+					if (!e.target.validity.valid) {
+						inputL.className = "invalid";
+						elemL.textContent = "Please enter a valid email address.";
+						elemL.className = "error";
+						elemL.style.display = "block";
+					}
+				});
+			
+				inputL.addEventListener("input", function(e) {
+					if (elemL.style.display === "block") {
+						inputL.className = "";
+						elemL.style.display = "none";
+					}
+				});
+				
+				passwordL.addEventListener("input", function(e) {
+					if (elemL.style.display === "block") {
+						inputL.className = "";
+						elemL.style.display = "none";
+					}
+				});
+				
+				inputR.addEventListener("invalid", function(e) {
+					e.preventDefault();
+					if (!e.target.validity.valid) {
+						inputR.className = "invalid";
+						elemR.textContent = "Please enter a valid email address.";
+						elemR.className = "error";
+						elemR.style.display = "block";
+					}
+				});
+			
+				inputR.addEventListener("input", function(e) {
+					if (elemR.style.display === "block") {
+						inputR.className = "";
+						elemR.style.display = "none";
+					}
+				});
+				
+				passwordR.addEventListener("input", function(e) {
+					if (elemR.style.display === "block") {
+						inputR.className = "";
+						elemR.style.display = "none";
+					}
+				});
+				
+				password2.addEventListener("input", function(e) {
+					if (elemR.style.display === "block") {
+						inputR.className = "";
+						elemR.style.display = "none";
+					}
+				});
 			});
 			
-			function validate(x) {
-				var xhttp = new XMLHttpRequest();
-				xhttp.open("POST", "LoginServlet");
-				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-				if (x === "register") {
-					xhttp.send("email=" + document.forms["register"]["email"].value +
-							   "&password=" + document.forms["register"]["password"].value +
-							   "&action=" + document.forms["register"]["action"].value);
-				} else {
-					xhttp.send("email=" + document.forms["login"]["email"].value +
-							   "&password=" + document.forms["login"]["password"].value +
-							   "&action=" + document.forms["login"]["action"].value);
-				}
-				
-				console.log(xhttp.responseText);
-
-				if (xhttp.responseText.trim().length > 0) {
-					alert(xhttp.responseText);
-					return false;
-				} else {
-					return true;
-				}
-/* 				if (x === "register") {
-					$.ajax({
-					    type: "POST",
-						url: "LoginServlet",
-						data: {
-							'email': document.forms["register"]["email"].value,
-							'password': document.forms["register"]["password"].value,
-							'action': document.forms["register"]["action"].value
-						},
-						success: function(result) {
-							console.log("Data sent");
+			function validateForm(form) {
+				if (form === "login") {
+					if (document.getElementById("emailL").checkValidity()) {
+						var xhttp = new XMLHttpRequest();
+						xhttp.open("POST", "LoginServlet", true);
+						xhttp.onreadystatechange = function () {
+							if (xhttp.readyState === 4 && xhttp.status === 200) {
+								var response = this.responseText;
+								if (response.trim() === "Login successful") {
+									window.localStorage.setItem("username", document.login.email.value);
+									alert("Login successful!");
+									window.location.replace("http://localhost:8080/ImHungry/search_page.jsp");
+								} else {
+									var elem = document.getElementById("messageL");
+									elem.textContent = response;
+									elem.className = "error";
+									elem.style.display = "block";
+								}
+							}
 						}
-					});
+						xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+						xhttp.send("field=email&email=" + document.login.email.value +
+								   "&field=password&password=" + document.login.password.value +
+								   "&field=action&action=" + document.login.action.value);
+					}
 				} else {
-					$.ajax({
-					    type: "POST",
-						url: "LoginServlet",
-						data: {
-							'email': document.forms["login"]["email"].value,
-							'password': document.forms["login"]["password"].value,
-							'action': document.forms["login"]["action"].value
-						},
-						success: function(result) {
-							console.log("Data sent");
+					if (document.getElementById("emailR").checkValidity()) {
+						if (document.register.password.value !== document.register.password2.value) {
+							var elem = document.getElementById("messageR");
+							elem.textContent = "Passwords do not match.";
+							elem.className = "error";
+							elem.style.display = "block";
+							return false;
 						}
-					});
-				} */
+						var xhttp = new XMLHttpRequest();
+						xhttp.open("POST", "LoginServlet", true);
+						xhttp.onreadystatechange = function () {
+							if (xhttp.readyState === 4 && xhttp.status === 200) {
+								var response = this.responseText;
+								if (response.trim() === "Registration successful") {
+									window.localStorage.setItem("username", document.register.email.value);
+									alert("Registration successful!");
+									window.location.replace("http://localhost:8080/ImHungry/search_page.jsp");
+								} else {
+									var elem = document.getElementById("messageR");
+									elem.textContent = response;
+									elem.className = "error";
+									elem.style.display = "block";
+								}
+							}
+						}
+						xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+						xhttp.send("field=email&email=" + document.register.email.value +
+								   "&field=password&password=" + document.register.password.value +
+								   "&field=action&action=" + document.register.action.value);
+					}
+				}
 			}
 		</script>
-	</head>
-	<body>
-		<div class="login-page">
-			<div class="form">
-			    <form name="register" class="register-form" method="post" onsubmit="return false">
-					<input name="email" type="text" placeholder="email address" aria-describedby="errorEmail" required pattern="[^]+@[^]+[.][a-z]{2,63}$"/>
-					<input name="password" type="password" placeholder="password"/>
-					<!-- <input name="password" type="password" placeholder="re-enter password"/> -->
-					<input name="action" type="hidden" value="register"/>
-					<input type="submit" onclick="return validate(form.name)" value="create"/>
-					<!-- <button onclick="return validate()">create</button> -->
-					<p class="message" id="register">Already registered? <a href="#">Sign In</a></p>
-			    </form>
-		    	<form name="login" class="login-form" method="post" onsubmit="return false">
-					<input name="email" type="text" placeholder="email address" aria-describedby="errorEmail" required pattern="[^]+@[^]+[.][a-z]{2,63}$"/>
-					<input name="password" type="password" placeholder="password"/>
-					<input name="action" type="hidden" value="login"/>
-					<input type="submit" onclick="return validate(form.name)" value="login"/>
-					<!-- <button onclick="return validate()">login</button> -->
-					<p class="message" id="login">Not registered? <a href="#">Create an account</a></p>
-				</form>
-			</div>
-		</div>
 	</body>
 </html>

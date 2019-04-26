@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
 	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
 	static String DB_USERNAME = "root";
 
-	static String DB_PASSWORD = "12345678Abc";
+	static String DB_PASSWORD = "12345";
 	
 	LoginServlet() {
 		super();
@@ -58,16 +58,22 @@ public class LoginServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			
 			if (action.equals("register")) {
-				ps = conn.prepareStatement("INSERT INTO User (username, password) VALUES (?,?)");
+				ps = conn.prepareStatement("SELECT * FROM User WHERE username = ?");
 				ps.setString(1, username);
-				ps.setString(2, password);
-				int update = ps.executeUpdate();
-				if (update == 1) {
-					out.println("Registration successful");
-					request.getSession().setAttribute("username", username);
-					response.sendRedirect(request.getContextPath() + "/search_page.jsp");
+				
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					out.println("This account already exists.");
 				} else {
-					out.println("Registration failed");
+					ps = conn.prepareStatement("INSERT INTO User (username, password) VALUES (?,?)");
+					ps.setString(1, username);
+					ps.setString(2, password);
+					int update = ps.executeUpdate();
+					if (update == 1) {
+						out.println("Registration successful");
+					} else {
+						out.println("Registration failed");
+					}
 				}
 			} else if (action.equals("login")) {
 				ps = conn.prepareStatement("SELECT * FROM User WHERE username = ?");
@@ -77,14 +83,10 @@ public class LoginServlet extends HttpServlet {
 				if (rs.next()) {
 					if (password.equals(rs.getString("password"))) {
 						out.println("Login successful");
-						request.getSession().setAttribute("username", username);
-						response.sendRedirect(request.getContextPath() + "/search_page.jsp");
 					} else {
 						out.println("Incorrect password");
 					}
 				}
-			} else if (action.equals("logout")){
-				//request.getSession().setAttribute("username", null);
 			}
 			
 //			ps = conn.prepareStatement("SELECT * FROM User");
