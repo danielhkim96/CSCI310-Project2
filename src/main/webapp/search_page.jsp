@@ -48,37 +48,14 @@
 										<div class="form-group row">
 											<label for="distance" class="col-sm-5 col-form-label">Distance in Miles</label>
 											<input type="number" class="form-control" min="0" onkeypress="return [45, 69, 101].indexOf(event.charCode) == -1" id="radius" name="radius"/>
-<!-- 											<select class="form-control">
-												<option value="0" selected>Default</option>
-												<option value="1">0.5</option>
-												<option value="2">1</option>
-												<option value="3">5</option>
-												<option value="4">10</option>
-											</select> -->
 										</div>
 									</div>
-<!-- 										<form class="form-horizontal" role="form">
-											<div class="form-group">
-												<label for="distance">Number of Search Results</label>
-												<input class="form-control" type="text" />
-											</div>
-											<div class="form-group">
-												<label for="filter">Filter by</label>
-												<select class="form-control">
-													<option value="0" selected>All Snippets</option>
-													<option value="1">Featured</option>
-													<option value="2">Most popular</option>
-													<option value="3">Top rated</option>
-													<option value="4">Most commented</option>
-												</select>
-											</div>
-										</form> -->
 								</div>
 							</div>
 							<button type="submit" class="btn btn-search" id="submit_button">Feed Me!</button>
 						</div>
 					</div>
-					<input type="hidden" id="username" name="username" value="<%= session.getAttribute("username")%>"/>
+					<input type="hidden" id="username" name="username" value=""/>
 				</div>
 				</form>
 			</div>
@@ -87,8 +64,8 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				var username = document.getElementById("username");
-				/* if (username.value === null || username.value === "") { */
-				if (document.getElementById("username").value === "null") {
+				username.value = window.localStorage.getItem("username");
+				if (username.value === "") {
 					$('.btn.btn-login').show();
 					$('.btn.btn-logout').hide();
 				} else {
@@ -97,26 +74,13 @@
 				}
 				
 				$('.btn.btn-logout').on('click', function() {
-					$.ajax({
-					    type: "POST",
-						url: "LoginServlet",
-						data: {
-							'action': "logout"
-						},
-						success: function() {
-							alert("Successfully logged out.");
-							document.getElementById("username").value = "null";
-							$('.btn.btn-login').show();
-							$('.btn.btn-logout').hide();
-						}
-					});
+					window.localStorage.clear();
+					username.value = "";
+					$('.btn.btn-login').show();
+					$('.btn.btn-logout').hide();
+					alert("Successfully logged out.");
 				});
-	/* 			
-				$('.message a').on('click', function() {
-					$('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-				}); */
 			});
-		
 			// Restrict input for the given textbox 
 			 function setInputFilter(textbox, inputFilter) {
 			 	["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
@@ -142,18 +106,12 @@
 			});
 		
 		    document.getElementById("submit_button").onclick = function () {
-			if(document.forms['search'].search_query.value === "") {
+			if (document.forms['search'].search_query.value === "") {
 					alert("Please enter a search term.");
 					return false;
 				}
 			document.getElementById("search_form").submit();
 		    };
 		</script>
-		<script
-  src="https://code.jquery.com/jquery-3.4.0.min.js"
-  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-  crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	</body>
 </html>

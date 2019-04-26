@@ -122,37 +122,4 @@ html body {
 tr:nth-child(even) {background: Silver}
 tr:nth-child(odd) {background: LightGray}
 
-
-/* New for Pagination, NOT WORKING*/
-
-.pagination {
-  display: inline-block;
-}
-
-.pagination a {
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-}
-
-.pagination a.active {
-  background-color: #4CAF50;
-  color: white;
-}
-
 .pagination a:hover:not(.active) {background-color: #ddd;}
-
-
-/*
-.container {
-  margin-top: 20px;
-}
-.page {
-  display: none;
-}
-.page-active {
-  display: block;
-}
-*/
- 
