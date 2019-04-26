@@ -14,7 +14,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	RestaurantGetterTest.class, 
 	RecipeTest.class, 
 	RestaurantTest.class,
-	IHSearchTest.class,
 	UserLoginTest.class
 	})
 
