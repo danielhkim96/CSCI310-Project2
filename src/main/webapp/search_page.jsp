@@ -36,7 +36,7 @@
 					<div class="input-group-btn">
 						<div class="btn-group" role="group">
 							<div class="dropdown dropdown-lg">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<button type="button" id="drop-down-button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 									<span class="caret"></span>
 								</button>
 								<div class="dropdown-menu dropdown-menu-right" role="menu">

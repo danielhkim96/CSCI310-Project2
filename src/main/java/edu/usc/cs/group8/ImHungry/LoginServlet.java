@@ -30,13 +30,13 @@ public class LoginServlet extends HttpServlet {
 	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
 	static String DB_USERNAME = "root";
 
-	static String DB_PASSWORD = "root";
+	static String DB_PASSWORD = "12345678Abc";
 	
-	LoginServlet() {
-		super();
-		
-	}
-	
+//	LoginServlet(){
+//		super();
+//		
+//	}
+//	
     
 	
     @Override
@@ -71,9 +71,8 @@ public class LoginServlet extends HttpServlet {
 					int update = ps.executeUpdate();
 					if (update == 1) {
 						out.println("Registration successful");
-					} else {
-						out.println("Registration failed");
-					}
+						request.getSession().setAttribute("username", username);
+					} 
 				}
 			} else if (action.equals("login")) {
 				ps = conn.prepareStatement("SELECT * FROM User WHERE username = ?");
@@ -83,6 +82,7 @@ public class LoginServlet extends HttpServlet {
 				if (rs.next()) {
 					if (password.equals(rs.getString("password"))) {
 						out.println("Login successful");
+						request.getSession().setAttribute("username", username);
 					} else {
 						out.println("Incorrect password");
 					}
@@ -141,19 +141,12 @@ public class LoginServlet extends HttpServlet {
 					double rating;
 					int driveTime;
 					
-					if(restaurantRating.equals("")) {
-						rating = 0.0;
-					}
-					else {
-						rating = Double.parseDouble(restaurantRating);
-					}
-					
-					if(restaurantDriveTime.equals("")) {
-						driveTime = -1;
-					}
-					else {
-						driveTime = Integer.parseInt(restaurantDriveTime);
-					}
+					//these cant happen because of the way Restaurant Constructor is written
+					//if(restaurantRating.equals("")) {rating = 0.0;}
+					//if(restaurantDriveTime.equals("")) {driveTime = -1;}
+						
+					rating = Double.parseDouble(restaurantRating);
+					driveTime = Integer.parseInt(restaurantDriveTime);	
 					Restaurant tempRest = new Restaurant( restName,driveTime,  restaurantURL,restAddress, restaurantPhone, -1, rating, "");
 					if(listName.equals("FAVORITES")){
 						//ListManager.getInstance().addToFavorites((Result)tempRest);

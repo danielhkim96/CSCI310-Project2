@@ -1,13 +1,25 @@
-Feature: Changing the order of the list
+Feature: Reordering Elements in List
 
-Scenario: Changing the order of Favorites bar
-	Given I search for "2" results for "chicken"
-	When I click on the drop-down list
-	And I drag the "Favorites" bar down
-	Then the "Favorites" bar order should change by 1
+Scenario: Dragging a single element in a populated list
+	Given I search for "3" results for "tacos"
+	When I click "Best Ground Beef Taco Meat"
+	And I add to Favorites List
+	And I click "Back to Results"
+	And I click "Ground Beef Tacos"
+	And I add to Favorites List
+	And I click "Back to Results"
+	And I click "Baked Beef Tacos"
+	And I add to Favorites List
+	And I click "Back to Results"
+	And I navigate to the Favorites Page
+	And I drag "Best Ground Beef Taco Meat" to "Baked Beef Tacos"
+	Then I should see these elements in a different order
 	
-Scenario: Keeping the order the same
+Scenario: Dragging a single element with no other elements
 	Given I search for "2" results for "chicken"
-	When I click on the drop-down list
-	And I hold the "Favorites" bar down
-	Then the order of the "Favorites" bar should change by 0
+	When I click "Last Minute Chicken Recipe"
+	And I add to Favorites List
+	And I click "Back to Results"
+	And I navigate to the Favorites Page
+	And I drag "Last Minute Chicken Recipe" to "Last Minute Chicken Recipe"
+	Then I should see no change in order

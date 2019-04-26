@@ -24,6 +24,7 @@
 	<body>
 		<%
 			String username = (String) session.getAttribute("username");
+			System.out.println("username is: " + username);
 			int ITEMS_EACH_PAGE = 5;
 		%>
 		

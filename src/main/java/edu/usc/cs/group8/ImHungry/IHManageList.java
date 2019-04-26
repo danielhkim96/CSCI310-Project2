@@ -37,7 +37,7 @@ public class IHManageList extends HttpServlet {
 	
 	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
 	static String DB_USERNAME = "root";
-	static String DB_PASSWORD = "root";
+	static String DB_PASSWORD = "12345678Abc";
 	
 	// get database name later
 	private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/project2?user=" + DB_USERNAME + "&password=" + DB_PASSWORD + "&userSSL=false&serverTimezone=UTC";
