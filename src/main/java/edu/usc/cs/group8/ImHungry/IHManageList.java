@@ -37,7 +37,7 @@ public class IHManageList extends HttpServlet {
 	
 	//PUT YOUR OWN MYSQL DATABASE USERNAME AND PASSWORD HERE
 	static String DB_USERNAME = "root";
-	static String DB_PASSWORD = "12345678Abc";
+	static String DB_PASSWORD = "root";
 	
 	// get database name later
 	private static final String DATABASE_CONNECTION_URL = "jdbc:mysql://localhost:3306/project2?user=" + DB_USERNAME + "&password=" + DB_PASSWORD + "&userSSL=false&serverTimezone=UTC";
@@ -239,6 +239,7 @@ public class IHManageList extends HttpServlet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				/*
 				// delimit instructions and ingredients by |
 				String instructions = "";
 				for(int i = 0; i < tempRecipe.getInstructions().size(); ++i) {
@@ -254,7 +255,7 @@ public class IHManageList extends HttpServlet {
 					if(i != tempRecipe.getIngredients().size()-1) {
 						ingredients += "|";
 					}
-				}
+				}*/
 				try {
 		    		Class.forName("com.mysql.jdbc.Driver");
 					conn = DriverManager.getConnection(DATABASE_CONNECTION_URL);
@@ -266,9 +267,7 @@ public class IHManageList extends HttpServlet {
 							+ "listIndex, "
 							+ "recipeImageURL, "
 							+ "recipeCookTime, "
-							+ "recipePrepTime, "
-							+ "recipeInstructions, "
-							+ "recipeIngredients"
+							+ "recipePrepTime"
 							+ ") VALUES ('" 
 							+ destinationID + "', '"
 							+ userName + "', '"
@@ -276,9 +275,7 @@ public class IHManageList extends HttpServlet {
 							+ Integer.toString(currIndex) + "', '"
 							+ tempRecipe.getImgURL() + "', '"
 							+ tempRecipe.getCookTime() + "', '"
-							+ tempRecipe.getPrepTime() + "', '"
-							+ instructions + "', '"
-							+ ingredients
+							+ tempRecipe.getPrepTime()
 							+ "');");
 					ret = ps.execute();
 				} catch (SQLException e) {
@@ -492,8 +489,7 @@ public class IHManageList extends HttpServlet {
 						+ "listIndex, "
 						+ "recipeImageURL, "
 						+ "recipeCookTime, "
-						+ "recipePrepTime, "
-						+ "recipeInstructions"
+						+ "recipePrepTime"
 						+ ") VALUES ('" 
 						+ listID + "', '"
 						+ userName + "', '"
